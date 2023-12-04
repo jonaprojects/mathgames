@@ -1,0 +1,22 @@
+{
+  "sprites": [
+    {
+      "type": "penguin",
+      "name": "פיני",
+      "path": "/animals/penguin.png",
+      "initialMessage": "שלום, אני פיני הפינגווין. אני אוהב מאוד מתמטיקה, ואני חושב שאני יותר טוב ממך בהרבה"
+    },
+    {
+      "type": "monkey",
+      "name": "ג'ורג",
+      "path": "/animals/monkey.png",
+      "initialMessage": "קוראים לי ג'ורג. אני אוהב בננות, ואת לוח הכפל. בוא נשחק!"
+    },
+    {
+      "type": "lion",
+      "name": "לביא",
+      "path": "/animals/lion.png",
+      "initialMessage": "אני הולך לנצח בקלות! לא סתם קוראים לי מלך הג'ונגל"
+    }
+  ]
+}
