@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Sprite from "@/components/sprite/Sprite";
-import TextBox from "@/components/sprite/Textbox/Textbox";
+import TextBox from "@/components/textbox/Textbox";
 import Template from "@/components/template/Template";
 import Board from "@/components/board/Board";
 import ProgressBar from "@/components/progress_bar/ProgressBar";

@@ -1,7 +1,7 @@
 export function H1(props) {
   return (
     <h1
-      className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold ${
+      className={`text-5xl md:text-6xl lg:text-7xl xl:text-7xl font-bold ${
         props.className ?? ""
       }`}
     >
@@ -21,4 +21,5 @@ export function H2(props) {
     </h1>
   );
 }
+
 

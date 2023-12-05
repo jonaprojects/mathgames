@@ -18,12 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-    direction:rtl;
-    background-repeat:no-repeat;
+  background: #f5f5f5;
+  direction: rtl;
+  background-repeat: no-repeat;
 }

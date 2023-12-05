@@ -1,5 +1,5 @@
 import Footer from "../footer/Footer";
-import Navbar from "../sprite/navbar/Navbar";
+import Navbar from "../navbar/Navbar";
 import { Inter, Open_Sans } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
