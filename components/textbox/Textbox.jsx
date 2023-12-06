@@ -25,7 +25,7 @@ export function SmallTextBox(props) {
   return (
     <div className={props.className}>
       <div
-        className={`${props.className} max-w-[40%] w-40 text-xs sm:text-sm md:text-base md:max-w-sm max-h-sm p-4 ${classes["speech-bubble"]}`}
+        className={`${props.className} max-w-[40%] w-48 md:w-40 text-xs sm:text-sm md:text-base md:max-w-sm max-h-sm p-4 ${classes["speech-bubble"]}`}
       >
         <TypeAnimation sequence={[props.content]} speed={50} />
       </div>

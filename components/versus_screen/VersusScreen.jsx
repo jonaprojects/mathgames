@@ -4,18 +4,24 @@ import Overlay from "../modal/Overlay";
 import Sprite from "../sprite/Sprite";
 import { H1 } from "../typography/Headers";
 import { motion } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import { ENTRY_ANIMATION, startBattle } from "@/store/battleSlice";
+
 //TODO: add context or redux instead of DUMMY data and props arguments
 export default function VersusScreen(props) {
   const [isMounted, setIsMounted] = useState(false);
+  const battleStatus = useSelector((state) => state.battle.status);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("Battle State:", battleStatus);
     setIsMounted(true);
   }, []);
 
-  const [show, setShow] = useState(props.show); //TODO: change dummy to context or redux
+  const show = battleStatus === ENTRY_ANIMATION;
 
   const closeVersusScreen = () => {
-    setShow(false);
+    dispatch(startBattle());
   };
   // A modal is closed by default
   if (!show) {

@@ -1,22 +1,159 @@
 {
   "sprites": [
     {
+      "id": 0,
       "type": "penguin",
       "name": "פיני",
       "path": "/animals/penguin.png",
       "initialMessage": "שלום, אני פיני הפינגווין. אני אוהב מאוד מתמטיקה, ואני חושב שאני יותר טוב ממך בהרבה"
     },
     {
+      "id": 1,
       "type": "monkey",
       "name": "ג'ורג",
       "path": "/animals/monkey.png",
       "initialMessage": "קוראים לי ג'ורג. אני אוהב בננות, ואת לוח הכפל. בוא נשחק!"
     },
     {
+      "id": 2,
       "type": "lion",
       "name": "לביא",
       "path": "/animals/lion.png",
       "initialMessage": "אני הולך לנצח בקלות! לא סתם קוראים לי מלך הג'ונגל"
+    },
+    {
+      "id": 3,
+      "type": "bulldog",
+      "name": "ג'וני",
+      "path": "/animals/bulldog.png",
+      "initialMessage": "שלום, אני ג'וני! אני אוהב לוח הכפל, ולאכול כדורי טניס!"
+    },
+    {
+      "id": 4,
+      "type": "bulldog",
+      "name": "בוני",
+      "path": "/animals/bulldog.png",
+      "initialMessage": "שלום! אני בוני! אני אלעס אותך כמו כדור טניס! אני מאוד תחרותית.."
+    },
+    {
+      "id": 5,
+      "type": "chicken",
+      "name": "ירדנה",
+      "path": "/animals/chicken.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 6,
+      "type": "crab",
+      "name": "ד'ר קראב",
+      "path": "/animals/crab.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 6,
+      "type": "cricket",
+      "name": "רוני",
+      "path": "/animals/cricket.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 7,
+      "type": "dinosaur",
+      "name": "",
+      "path": "/animals/dinosaur.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 8,
+      "type": "dinosaur",
+      "name": "ברכה",
+      "path": "/animals/dinosaur2.png",
+      "initialMessage": ""
+    },
+
+    {
+      "id": 9,
+      "type": "frog",
+      "name": "ניליקס",
+      "path": "/animals/frog.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 10,
+      "type": "sloth",
+      "name": "",
+      "path": "/animals/sloth.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 11,
+      "type": "bird",
+      "name": "ציפי",
+      "path": "/animals/singingBird.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 12,
+      "type": "seal",
+      "name": "סופי",
+      "path": "/animals/seal.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 13,
+      "type": "turtle",
+      "name": "צדי",
+      "path": "/animals/turtle.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 14,
+      "type": "unicorn",
+      "name": "שולי",
+      "path": "/animals/unicorn.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 15,
+      "type": "donkey",
+      "name": "ג'ו",
+      "path": "/animals/donkey.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 16,
+      "type": "owl",
+      "name": "שפי",
+      "path": "/animals/owl.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 17,
+      "type": "panda",
+      "name": "הייקו",
+      "path": "/animals/owl.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 18,
+      "type": "tiger",
+      "name": "רוקי",
+      "path": "/animals/tiger.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 19,
+      "type": "pig",
+      "name": "בובי",
+      "path": "/animals/pig.png",
+      "initialMessage": ""
+    },
+    {
+      "id": 20,
+      "type": "tiger",
+      "name": "באנה",
+      "path": "/animals/tigerPuppy.png",
+      "initialMessage": ""
     }
   ]
 }

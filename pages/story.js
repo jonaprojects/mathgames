@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
+//redux
+import { useDispatch } from "react-redux";
+import { setInactive } from "@/store/battleSlice";
+
+//custom components
 import Template from "@/components/template/Template";
 import Container from "@/components/containers/Container";
 import { H1 } from "@/components/typography/Headers";
@@ -9,7 +14,13 @@ import TextBox from "@/components/textbox/Textbox";
 import TalkingSprite, {
   TalkingSpriteShowOnClick,
 } from "@/components/sprite/TalkingSprite";
+
 export default function Story(props) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setInactive());
+  }, [dispatch]);
   return (
     <Template>
       <Container>
@@ -43,7 +54,7 @@ export default function Story(props) {
             message="שלום! איזה כיף שבאת! "
           />
         </div>
-        <StoryParagraph className="mb-3 mt-14">
+        <StoryParagraph className="mb-3 mt-16">
           יוֹם אֶחָד, הֶחֱלִיט הַמּוֹרֶה בַּכְּפָר, לַעֲרֹךְ יְרִיד גָּדוֹל
           שֶׁבּוֹ יִלְמְדוּ גּוּרֵי הַחַיּוֹת אֶת לוּחַ הַכֶּפֶל...
         </StoryParagraph>
@@ -59,9 +70,15 @@ export default function Story(props) {
         <StoryParagraph className="mb-6">
           עָזְרוּ לָהֶם לְהִתְאַמֵּן יְלָדִים.
         </StoryParagraph>
-        <div className="flex">
-          <Sprite src="/animals/panda.png" />
-          <Sprite src="/animals/pig.png" />
+        <div className="flex mb-28">
+          <TalkingSpriteShowOnClick
+            src="/animals/panda.png"
+            message="היי, אני הייקו! רוצה להתאמן איתי?"
+          />
+          <TalkingSpriteShowOnClick
+            src="/animals/pig.png"
+            message="היייי מה קורה? אני בובי! רוצה להתפלש איתי בבוץ?"
+          />{" "}
         </div>
       </Container>
     </Template>

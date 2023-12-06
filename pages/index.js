@@ -1,4 +1,15 @@
-import Image from "next/image";
+import React, { useEffect } from "react";
+
+//redux state management
+import {
+  startBattle,
+  startEntryAnimation,
+  endBattle,
+  ENTRY_ANIMATION,
+} from "@/store/battleSlice";
+import { useDispatch } from "react-redux";
+
+// custom components
 import Sprite from "@/components/sprite/Sprite";
 import TextBox from "@/components/textbox/Textbox";
 import Template from "@/components/template/Template";
@@ -7,7 +18,13 @@ import ProgressBar from "@/components/progress_bar/ProgressBar";
 import data from "../data/sprites.json";
 import Container from "@/components/containers/Container";
 import VersusScreen from "@/components/versus_screen/VersusScreen";
+
 export default function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(startEntryAnimation());
+  }, [dispatch]);
   var sprites = data.sprites;
 
   var currentSprite = sprites[2];
@@ -31,7 +48,7 @@ export default function Home() {
           </div>
         </Container>
       </Template>
-      <VersusScreen show={true} />
+      <VersusScreen />
     </>
   );
 }
