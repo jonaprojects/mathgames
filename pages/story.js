@@ -78,7 +78,7 @@ export default function Story(props) {
           <TalkingSpriteShowOnClick
             src="/animals/pig.png"
             message="היייי מה קורה? אני בובי! רוצה להתפלש איתי בבוץ?"
-          />{" "}
+          />
         </div>
       </Container>
     </Template>

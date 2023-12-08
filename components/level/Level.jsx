@@ -1,9 +1,15 @@
 import React from "react";
 import { H2 } from "../typography/Headers";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function Level(props) {
-  const lockedClasses = `opacity-75 cursor-not-allowed`  
+  const lockedClasses = `opacity-75 cursor-not-allowed`;
+  const router = useRouter();
+
+  const onClickHandler = () => {
+    router.push({ pathname: "/", query: { level: props.levelNum } });
+  };
   return (
     <div
       className={`relative bg-${
@@ -11,6 +17,7 @@ export default function Level(props) {
       } border-white border-4 w-16 h-16 md:w-20 md:h-20 rounded-full cursor-pointer flex justify-center items-center
       ${props.locked && lockedClasses}
       ${props.className ?? ""} `}
+      onClick={onClickHandler}
     >
       <H2 className="text-white">{props.levelNum}</H2>
       {props.locked && (
@@ -21,7 +28,6 @@ export default function Level(props) {
           alt="Locked"
           priority
           className="absolute -top-3"
-          onClick={() => alert("locked!")}
         />
       )}
     </div>

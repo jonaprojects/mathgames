@@ -56,7 +56,6 @@ export default function VersusScreen(props) {
       <Overlay
         className={`flex items-center justify-center`}
         close={() => {
-          console.log("close it");
         }}
       >
         <motion.div
@@ -101,8 +100,8 @@ export default function VersusScreen(props) {
               },
             ]}
           >
-            <H1 className="text-white">{DUMMY_SPRITE.name}</H1>
-            <Sprite src={DUMMY_SPRITE.path} />
+            <H1 className="text-white">{props.opponentSprite.name}</H1>
+            <Sprite src={props.opponentSprite.path} />
           </motion.div>
         </motion.div>
         <motion.div

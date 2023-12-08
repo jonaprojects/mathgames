@@ -1,0 +1,40 @@
+{
+  "levels": [
+    {
+      "levelNumber": 1,
+      "mistakeChance": 65,
+      "timePerQuestion": 30,
+      "minNumber": 0,
+      "maxNumber": 3,
+      "difficulty": "BEGINNER",
+      "totalTimeBonus": 10,
+      "correctPoints": 25,
+      "opponentID": 1,
+      "opponentMistakeAccuracy": 45
+    },
+    {
+      "levelNumber": 2,
+      "mistakeChance": 60,
+      "timePerQuestion": 30,
+      "minNumber": 0,
+      "maxNumber": 3,
+      "difficulty": "BEGINNER",
+      "totalTimeBonus": 10,
+      "correctPoints": 25,
+      "opponentID": 2,
+      "opponentMistakeAccuracy": 50
+    },
+    {
+      "levelNumber": 3,
+      "mistakeChance": 55,
+      "timePerQuestion": 30,
+      "minNumber": 0,
+      "maxNumber": 3,
+      "difficulty": "BEGINNER",
+      "totalTimeBonus": 10,
+      "correctPoints": 25,
+      "opponentID": 2,
+      "opponentMistakeAccuracy": 50
+    }
+  ]
+}
