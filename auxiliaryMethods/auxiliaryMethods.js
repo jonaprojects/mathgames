@@ -14,3 +14,4 @@ export function getRandomElement(list) {
 export function getRandomNumber(min, max) {
   return parseInt(Math.random() * (max - min) + min);
 }
+ 

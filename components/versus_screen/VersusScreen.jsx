@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { ENTRY_ANIMATION, startBattle } from "@/store/battleSlice";
 
-//TODO: add context or redux instead of DUMMY data and props arguments
 export default function VersusScreen(props) {
   const [isMounted, setIsMounted] = useState(false);
   const battleStatus = useSelector((state) => state.battle.status);
@@ -28,13 +27,7 @@ export default function VersusScreen(props) {
     return <></>;
   }
 
-  const DUMMY_SPRITE = {
-    type: "lion",
-    name: "לביא",
-    path: "/animals/lion.png",
-    initialMessage: "אני הולך לנצח בקלות! לא סתם קוראים לי מלך הג'ונגל",
-  };
-
+  //TODO: change this to real data
   const MY_SPRITE = {
     type: "penguin",
     name: "פיני",
@@ -53,11 +46,7 @@ export default function VersusScreen(props) {
   return (
     isMounted &&
     createPortal(
-      <Overlay
-        className={`flex items-center justify-center`}
-        close={() => {
-        }}
-      >
+      <Overlay className={`flex items-center justify-center`} close={() => {}}>
         <motion.div
           className="flex gap-4 items-center"
           animate={{
