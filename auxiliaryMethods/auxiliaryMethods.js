@@ -10,3 +10,7 @@ export function getRandomElement(list) {
   // Return the element at the random index
   return list[randomIndex];
 }
+
+export function getRandomNumber(min, max) {
+  return parseInt(Math.random() * (max - min) + min);
+}

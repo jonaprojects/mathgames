@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 //redux state management
 import {
@@ -24,16 +25,23 @@ import VersusScreen from "@/components/versus_screen/VersusScreen";
 import levelsData from "../data/levels.json";
 import spritesData from "../data/sprites.json";
 
-import { useRouter } from "next/router";
-import { current } from "@reduxjs/toolkit";
 import LoadingScreen from "@/components/loading_screen/LoadingScreen";
+
+// models
+import OpponentPlayer from "@/models/Opponent";
+import generateExercise from "@/models/ExerciseGenerator";
 
 export default function Home() {
   const dispatch = useDispatch();
   const battleStatus = useSelector((state) => state.battle.status);
   const router = useRouter();
   const [currentSprite, setCurrentSprite] = useState(null);
+  const [currentOpponent, setCurrentOpponent] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  const [number1, setNumber1] = useState();
+  const [number2, setNumber2] = useState();
 
   useEffect(() => {
     dispatch(startEntryAnimation());
@@ -56,6 +64,18 @@ export default function Home() {
       )[0];
 
       setCurrentSprite(currentSprite);
+      setCurrentOpponent(
+        new OpponentPlayer(
+          currentSprite.id,
+          currentSprite.name,
+          currentSprite.mistakeChance,
+          currentSprite.mistakeAccuracy
+        )
+      );
+
+      const [num1, num2] = generateExercise(currentLevelObj.minNumber, currentLevelObj.maxNumber);
+      setNumber1(num1);
+      setNumber2(num2);
     }
   }, [router.isReady, router.query.level]);
 
@@ -78,7 +98,7 @@ export default function Home() {
                 <Sprite src={currentSprite.path} />
                 <TextBox content={currentSprite.initialMessage} />
               </div>
-              <Board num1={4} num2={3} className="mb-5" />
+              <Board num1={number1} num2={number2} className="mb-5" />
               <input
                 type="text"
                 className=" mt-7 bg-slate-50 text-lg p-2 w-full"
