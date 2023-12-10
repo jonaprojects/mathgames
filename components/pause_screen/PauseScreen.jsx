@@ -7,16 +7,17 @@ import { H1 } from "../typography/Headers";
 import ToolkitButton from "../buttons/ToolkitButton";
 
 export default function PauseScreen(props) {
+  console.log("entered the pause screen!");
   const [isMounted, setIsMounted] = useState(false);
-  const battleStatus = useSelector((state) => state.battle.status);
+  const battleSettings = useSelector((state) => state.battle.settings);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Battle State:", battleStatus);
+    console.log("Battle settings:", battleSettings);
     setIsMounted(true);
   }, []);
 
-  const show = battleStatus === PAUSE_SCREEN;
+  const show = battleSettings.status === PAUSE_SCREEN;
 
   // A modal is closed by default
   if (!show) {

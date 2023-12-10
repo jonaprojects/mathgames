@@ -5,7 +5,7 @@ import { IN_BATTLE, PAUSE_SCREEN } from "@/store/battleSlice";
 
 export default function Timer(props) {
   const [secondsLeft, setSecondsLeft] = useState(parseInt(props.secondsLeft));
-  const battleStatus = useSelector((state) => state.battle.status);
+  const battleStatus = useSelector((state) => state.battle.settings.status);
   useEffect(() => {
     const decreaseTime = () => {
       if (secondsLeft > 0 && battleStatus === IN_BATTLE) {

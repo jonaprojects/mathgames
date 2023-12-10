@@ -53,6 +53,7 @@ export default function Toolkit(props) {
                 alt="עצור את המשחק"
                 onClick={() => {
                   dispatch(pauseGame());
+                  console.log("pausing game!");
                 }}
                 animate={{
                   x: 0,
@@ -79,7 +80,6 @@ export default function Toolkit(props) {
                 initial={{ x: 60, rotate: 0 }}
                 transition={{ duration: 0.5 }}
                 exit={{ x: 60, rotate: 0, opacity: 0 }}
-               
               />
             )}
           </AnimatePresence>

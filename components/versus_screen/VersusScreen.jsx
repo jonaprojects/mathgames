@@ -9,7 +9,7 @@ import { ENTRY_ANIMATION, startBattle } from "@/store/battleSlice";
 
 export default function VersusScreen(props) {
   const [isMounted, setIsMounted] = useState(false);
-  const battleStatus = useSelector((state) => state.battle.status);
+  const battleStatus = useSelector((state) => state.battle.settings.status);
   const dispatch = useDispatch();
 
   useEffect(() => {

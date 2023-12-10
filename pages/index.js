@@ -13,6 +13,7 @@ import {
   LOADING,
   setLoading,
   PAUSE_SCREEN,
+  moveToBattlePage,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -39,12 +40,13 @@ import PauseScreen from "@/components/pause_screen/PauseScreen";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const battleStatus = useSelector((state) => state.battle.status);
+  const battleStatus = useSelector((state) => state.battle.settings.status);
+  const isLoading = useSelector((state) => state.battle.settings.loading);
+
   const router = useRouter();
   const [currentSprite, setCurrentSprite] = useState(null);
   const [currentOpponent, setCurrentOpponent] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(true);
 
   const [number1, setNumber1] = useState();
   const [number2, setNumber2] = useState();
@@ -52,12 +54,17 @@ export default function Home() {
   //TODO: add the loading state later?
 
   useEffect(() => {
-    dispatch(startEntryAnimation());
+    dispatch(moveToBattlePage());
+    dispatch(setLoading()); // start loading the page
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("The battle status is ", battleStatus);
+  }, [battleStatus]);
+
+  useEffect(() => {
     if (router.isReady) {
-      setIsLoading(false); // WE FINISHED LOADING!
+      dispatch(startEntryAnimation());
       const levels = levelsData.levels; // TODO: export this to a useLevel() hook perhaps?
       const currentLevelNumber = Number(router.query.level);
       console.log("current level number: ", typeof currentLevelNumber);
@@ -87,7 +94,7 @@ export default function Home() {
       setNumber1(num1);
       setNumber2(num2);
     }
-  }, [router.isReady, router.query.level]);
+  }, [router.isReady, router.query.level, dispatch]);
 
   if (isLoading) {
     return (
