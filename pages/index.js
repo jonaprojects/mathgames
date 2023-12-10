@@ -14,6 +14,8 @@ import {
   setLoading,
   PAUSE_SCREEN,
   moveToBattlePage,
+  MULTIPLICATION_TABLE_SCREEN,
+  HELP_SCREEN,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,6 +39,8 @@ import LoadingScreen from "@/components/loading_screen/LoadingScreen";
 import OpponentPlayer from "@/models/Opponent";
 import generateExercise from "@/models/ExerciseGenerator";
 import PauseScreen from "@/components/pause_screen/PauseScreen";
+import MultiplicationTableScreen from "@/components/multiplication_table_screen/MultiplicationTableScreen";
+import HelpScreen from "@/components/help_screen/HelpScreen";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -46,7 +50,6 @@ export default function Home() {
   const router = useRouter();
   const [currentSprite, setCurrentSprite] = useState(null);
   const [currentOpponent, setCurrentOpponent] = useState(null);
-
 
   const [number1, setNumber1] = useState();
   const [number2, setNumber2] = useState();
@@ -127,6 +130,10 @@ export default function Home() {
               </div>
               <Toolkit />
               {battleStatus === PAUSE_SCREEN && <PauseScreen />}
+              {battleStatus === MULTIPLICATION_TABLE_SCREEN && (
+                <MultiplicationTableScreen />
+              )}
+              {battleStatus === HELP_SCREEN && <HelpScreen />}
             </Container>
           )}
       </Template>

@@ -2,37 +2,33 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ToolkitButton from "../buttons/ToolkitButton";
-import { pauseGame } from "@/store/battleSlice";
+import {
+  HELP_SCREEN,
+  MULTIPLICATION_TABLE_SCREEN,
+  PAUSE_SCREEN,
+  pauseGame,
+  setStatus,
+} from "@/store/battleSlice";
 import { useDispatch } from "react-redux";
 
 export default function Toolkit(props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
 
-  const generateAnimateObj = (offset) => {
-    return isExpanded
-      ? {
-          x: -distance,
-          rotate: 360,
-        }
-      : {
-          x: 0,
-          rotate: 360,
-        };
+  const openPauseScreen = () => {
+    dispatch(pauseGame());
+    dispatch(setStatus(PAUSE_SCREEN));
   };
 
-  const generateInitialObj = (offset) => {
-    return isExpanded
-      ? {
-          x: 0,
-          rotate: 0,
-        }
-      : {
-          x: distance,
-          rotate: 0,
-        };
+  const openMultiplicationTableScreen = () => {
+    dispatch(pauseGame());
+    dispatch(setStatus(MULTIPLICATION_TABLE_SCREEN));
   };
 
+  const openHelpScreen = () => {
+    dispatch(pauseGame());
+    dispatch(setStatus(HELP_SCREEN));
+  };
   const onClickHandler = () => {
     setIsExpanded((prevExpanded) => !prevExpanded); // toggle the expanded state
   };
@@ -51,10 +47,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/pause.svg"
                 alt="עצור את המשחק"
-                onClick={() => {
-                  dispatch(pauseGame());
-                  console.log("pausing game!");
-                }}
+                onClick={openPauseScreen}
                 animate={{
                   x: 0,
                   rotate: 360,
@@ -72,7 +65,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/math.svg"
                 alt="לוח הכפל"
-                onClick={onClickHandler}
+                onClick={openMultiplicationTableScreen}
                 animate={{
                   x: 0,
                   rotate: 360,
@@ -89,7 +82,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/help.svg"
                 alt="עזרה"
-                onClick={onClickHandler}
+                onClick={openHelpScreen}
                 animate={{
                   x: 0,
                   rotate: 360,

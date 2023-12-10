@@ -29,6 +29,7 @@ export function TalkingSpriteShowOnClick(props) {
       onClick={onClickHandler}
       show={showTextbox}
       message={props.message}
+      className={props.className}
     />
   );
 }

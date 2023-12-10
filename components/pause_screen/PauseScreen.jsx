@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Overlay from "../modal/Overlay";
 import { useSelector, useDispatch } from "react-redux";
-import { PAUSE_SCREEN, startBattle } from "@/store/battleSlice";
+import { PAUSE_SCREEN, startBattle, unPauseGame } from "@/store/battleSlice";
 import { H1 } from "../typography/Headers";
 import ToolkitButton from "../buttons/ToolkitButton";
 
@@ -36,7 +36,7 @@ export default function PauseScreen(props) {
           src="/pause.svg"
           alt="עצור את המשחק"
           onClick={() => {
-            dispatch(startBattle());
+            dispatch(unPauseGame());
           }}
           width={60}
           height={60}

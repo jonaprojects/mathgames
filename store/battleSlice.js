@@ -8,7 +8,7 @@ export const PAUSE_SCREEN = "PAUSE_SCREEN";
 export const MUL_SCREEN = "MUL_SCREEN";
 export const HELP_SCREEN = "HELP_SCREEN";
 export const FINISH_SCREEN = "FINISH_SCREEN";
-
+export const MULTIPLICATION_TABLE_SCREEN = "MULTIPLICATION_TABLE_SCREEN";
 const initialState = {
   inBattlePage: false,
   settings: {
@@ -45,7 +45,7 @@ const battleSlice = createSlice({
       state.settings.status = INACTIVE;
     },
     setStatus: (state, action) => {
-      state.settings.status = parseInt(action.payload);
+      state.settings.status = action.payload;
     },
     setLoading: (state) => {
       state.settings.loading = true;
@@ -54,7 +54,6 @@ const battleSlice = createSlice({
     pauseGame: (state) => {
       state.settings.pause = true;
       state.settings.inBattle = false;
-      state.settings.status = PAUSE_SCREEN;
     },
     unPauseGame: (state) => {
       state.settings.pause = false;
