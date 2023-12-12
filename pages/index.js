@@ -41,18 +41,35 @@ import generateExercise from "@/models/ExerciseGenerator";
 import PauseScreen from "@/components/pause_screen/PauseScreen";
 import MultiplicationTableScreen from "@/components/multiplication_table_screen/MultiplicationTableScreen";
 import HelpScreen from "@/components/help_screen/HelpScreen";
+import useCurrentLevel from "@/hooks/useCurrentLevel";
+import LockedLevelModal from "@/components/custom_modals/LockedLevelModal";
 
 export default function Home() {
+  // dispatching actions on the redux store
   const dispatch = useDispatch();
+
+  // accessing the redux store
   const battleStatus = useSelector((state) => state.battle.settings.status);
   const isLoading = useSelector((state) => state.battle.settings.loading);
 
+  // router object to redirect to different pages
   const router = useRouter();
+
+  // the current level that the user is in according to the local storage
+  const [currentLevel, setCurrentLevel, isLocked] = useCurrentLevel();
+
+  const [isLevelLocked, setIsLevelLocked] = useState(false);
+
+  // sprites
   const [currentSprite, setCurrentSprite] = useState(null);
   const [currentOpponent, setCurrentOpponent] = useState(null);
 
+  // the numbers of the exervise
   const [number1, setNumber1] = useState();
   const [number2, setNumber2] = useState();
+
+  // whether we answered the exercise or not
+  const [sentResult, setSentResult] = useState(false);
 
   //TODO: add the loading state later?
 
@@ -67,10 +84,17 @@ export default function Home() {
 
   useEffect(() => {
     if (router.isReady) {
-      dispatch(startEntryAnimation());
       const levels = levelsData.levels; // TODO: export this to a useLevel() hook perhaps?
       const currentLevelNumber = Number(router.query.level);
       console.log("current level number: ", typeof currentLevelNumber);
+
+      // check if the level is locked
+      if (isLocked(currentLevelNumber)) {
+        console.log("The level is locked!");
+        setIsLevelLocked(true);
+        //TODO: update somehow the redux storage accordingly!
+      }
+
       const currentLevelObj = levels.filter(
         (level) => level.levelNumber === currentLevelNumber
       )[0];
@@ -96,6 +120,9 @@ export default function Home() {
       );
       setNumber1(num1);
       setNumber2(num2);
+
+      // after we finished processing all the data we can load the animation
+      dispatch(startEntryAnimation()); //? that means we finished loading
     }
   }, [router.isReady, router.query.level, dispatch]);
 
@@ -121,11 +148,27 @@ export default function Home() {
                   <TextBox content={currentSprite.initialMessage} />
                 </div>
                 <Board num1={number1} num2={number2} className="mb-5" />
-                <input
-                  type="text"
-                  className=" mt-7 bg-slate-50 text-lg p-2 w-full"
-                  placeholder="הקלד תשובה"
-                />
+                <div className="w-full flex mt-7">
+                  <input
+                    type="text"
+                    className="bg-slate-50 text-lg p-2 w-9/12"
+                    placeholder="הקלד תשובה"
+                  />
+                  {!sentResult && (
+                    <button
+                      className="text-white bg-purple-600 p-2 w-3/12 hover:bg-purple-700"
+                      onClick={() => setSentResult(true)}
+                    >
+                      שלח
+                    </button>
+                  )}
+                  {sentResult && (
+                    <button className="text-white disabled cursor-default bg-purple-600 opacity-80 p-2 w-3/12">
+                      נשלח
+                    </button>
+                  )}
+                </div>
+
                 <ProgressBar progress={34} className="mt-6" />
               </div>
               <Toolkit />
@@ -134,6 +177,7 @@ export default function Home() {
                 <MultiplicationTableScreen />
               )}
               {battleStatus === HELP_SCREEN && <HelpScreen />}
+              {isLevelLocked && <LockedLevelModal />}
             </Container>
           )}
       </Template>

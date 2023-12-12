@@ -32,7 +32,7 @@
       "id": 5,
       "type": "bulldog",
       "name": "בוני",
-      "path": "/animals/bulldog.png",
+      "path": "/animals/bulldog2.png",
       "initialMessage": "שלום! אני בוני! אני אלעס אותך כמו כדור טניס! אני מאוד תחרותית.."
     },
     {
@@ -40,35 +40,35 @@
       "type": "chicken",
       "name": "ירדנה",
       "path": "/animals/chicken.png",
-      "initialMessage": ""
+      "initialMessage": "קוקוריקו!!! קוראים לי ירדנה! לוח הכפל קצת קשה לי אבל אני משתפרת!"
     },
     {
       "id": 7,
       "type": "crab",
-      "name": "ד'ר קראב",
+      "name": "סמי",
       "path": "/animals/crab.png",
-      "initialMessage": ""
+      "initialMessage": "אני אוהב את הים. ולצבוט אנשים! בוא נשחק :)"
     },
     {
       "id": 8,
       "type": "cricket",
       "name": "רוני",
       "path": "/animals/cricket.png",
-      "initialMessage": ""
+      "initialMessage": "היי, אני רוני הצרצר. מזמן לא התאמנתי באמת בלוח הכפל..."
     },
     {
       "id": 9,
       "type": "dinosaur",
-      "name": "",
+      "name": "רקס",
       "path": "/animals/dinosaur.png",
-      "initialMessage": ""
+      "initialMessage": "היי אני רקס! כל העולם חושב שנכחדתי, אז אל תגלה לאף אחד בבקשה..."
     },
     {
       "id": 10,
       "type": "dinosaur",
-      "name": "ברכה",
+      "name": "לולו",
       "path": "/animals/dinosaur2.png",
-      "initialMessage": ""
+      "initialMessage": "אני לולו! מה קרה? לא ראית אף פעם דינוזאורית?"
     },
 
     {
@@ -76,84 +76,84 @@
       "type": "frog",
       "name": "ניליקס",
       "path": "/animals/frog.png",
-      "initialMessage": ""
+      "initialMessage": "אני אוהב מאוד לקפוץ על עלים. אני ניליקס, דרך אגב."
     },
     {
       "id": 12,
       "type": "sloth",
-      "name": "",
+      "name": "לוריס",
       "path": "/animals/sloth.png",
-      "initialMessage": ""
+      "initialMessage": "בוקר טוב... אני לוריס. בוא נסיים את זה שאוכל לחזור לישון!"
     },
     {
       "id": 13,
       "type": "bird",
       "name": "ציפי",
       "path": "/animals/singingBird.png",
-      "initialMessage": ""
+      "initialMessage": "שלום, אני ציפי! אני אוהבת לשיר כל בוקר ולשמח את כולם. בואו נשחק"
     },
     {
       "id": 14,
       "type": "seal",
       "name": "סופי",
       "path": "/animals/seal.png",
-      "initialMessage": ""
+      "initialMessage": "היי, קוראים לי סופי. אני הכי טובה בחשבון מכל המשפחה שלי!"
     },
     {
       "id": 15,
       "type": "turtle",
       "name": "צדי",
       "path": "/animals/turtle.png",
-      "initialMessage": ""
+      "initialMessage": "אני אמנם קצת איטי... אבל אני מאוד מדויק! אני צדי הצב דרך אגב."
     },
     {
       "id": 16,
       "type": "unicorn",
       "name": "שולי",
       "path": "/animals/unicorn.png",
-      "initialMessage": ""
+      "initialMessage": "אני שולי, ואני חדת קרן. אני אוהבת חשבון וקשת בענן!"
     },
     {
       "id": 17,
       "type": "donkey",
       "name": "ג'ו",
       "path": "/animals/donkey.png",
-      "initialMessage": ""
+      "initialMessage": "מה קורה? אני ג'ו. חיכיתי ליריב ראוי כמוך כבר הרבה זמן."
     },
     {
       "id": 18,
       "type": "owl",
       "name": "שפי",
       "path": "/animals/owl.png",
-      "initialMessage": ""
+      "initialMessage": "אני שפי הינשוף. אני הציפור הכי מגניבה של הלילה!"
     },
     {
       "id": 19,
       "type": "panda",
       "name": "הייקו",
-      "path": "/animals/owl.png",
-      "initialMessage": ""
+      "path": "/animals/panda.png",
+      "initialMessage": "היייי, אני הייקו! איזה כיף שבאת להתאמן איתי. כבר ממש השתעממתי!"
     },
     {
       "id": 20,
       "type": "tiger",
       "name": "רוקי",
       "path": "/animals/tiger.png",
-      "initialMessage": ""
+      "initialMessage": "אני רוקי. אני אף פעם לא מוותר, ואני נחוש להיות הכי טוב בעולם בחשבון."
     },
     {
       "id": 21,
       "type": "pig",
       "name": "בובי",
       "path": "/animals/pig.png",
-      "initialMessage": ""
+      "initialMessage": "הייי אני בובי, רוצה להתפלש איתי בבוץ?"
     },
     {
       "id": 22,
       "type": "tiger",
       "name": "באנה",
       "path": "/animals/tigerPuppy.png",
-      "initialMessage": ""
+      "initialMessage": "אני מכירה את הלוח הכפל די טוב. מדי פעם אני קצת לא מדייקת."
     }
   ]
 }

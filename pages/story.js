@@ -7,13 +7,14 @@ import { setInactive } from "@/store/battleSlice";
 //custom components
 import Template from "@/components/template/Template";
 import Container from "@/components/containers/Container";
-import { H1 } from "@/components/typography/Headers";
+import { H1, H2 } from "@/components/typography/Headers";
 import { StoryParagraph } from "@/components/typography/Paragraphs";
 import Sprite from "@/components/sprite/Sprite";
 import TextBox from "@/components/textbox/Textbox";
 import TalkingSprite, {
   TalkingSpriteShowOnClick,
 } from "@/components/sprite/TalkingSprite";
+import Overlay from "@/components/modal/Overlay";
 
 export default function Story(props) {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function Story(props) {
     <Template>
       <Container>
         <H1 className="mb-8">איך הכל התחיל?</H1>
+
         <StoryParagraph className="mb-3">
           בִּכְפָר קָטָן וְעַתִּיק רָחוֹק רָחוֹק מֵעַל הַר גָּבוֹהַּ, יֶשְׁנוֹ
           פֶּתַח קָסוּם...
@@ -81,6 +83,7 @@ export default function Story(props) {
           />
         </div>
       </Container>
+     
     </Template>
   );
 }

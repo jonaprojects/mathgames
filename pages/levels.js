@@ -8,16 +8,21 @@ import Template from "@/components/template/Template";
 import { H1 } from "@/components/typography/Headers";
 import { useDispatch } from "react-redux";
 import { setInactive } from "@/store/battleSlice";
+import useCurrentLevel from "@/hooks/useCurrentLevel";
 
 export default function Levels() {
+  const NUM_OF_LEVELS = 30;
   const dispatch = useDispatch();
+  const [currentLevel, gotoNextLevel, isLocked] = useCurrentLevel();
 
   useEffect(() => {
     dispatch(setInactive());
-  }, [dispatch]);
-  
+    console.log("the current level is", currentLevel);
+  }, []);
+
+  // TODO: create a context that holds the number of levels, and completed levels. show this accordingly
   const DUMMY_LEVELS = []; //TODO: later replace with actual data
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < NUM_OF_LEVELS; i++) {
     DUMMY_LEVELS.push(i + 1);
   }
 
@@ -35,7 +40,7 @@ export default function Levels() {
                   levelNum={levelNum}
                   key={levelNum}
                   className="m-0 p-0"
-                  locked={levelNum < 8 ? false : true}
+                  locked={isLocked(levelNum)}
                 />
               );
             })}
