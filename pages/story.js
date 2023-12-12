@@ -14,7 +14,7 @@ import TextBox from "@/components/textbox/Textbox";
 import TalkingSprite, {
   TalkingSpriteShowOnClick,
 } from "@/components/sprite/TalkingSprite";
-import Overlay from "@/components/modal/Overlay";
+import EndBoard from "@/components/board/FinishBoard";
 
 export default function Story(props) {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export default function Story(props) {
     <Template>
       <Container>
         <H1 className="mb-8">איך הכל התחיל?</H1>
-
+        {/* <EndBoard userAnswer={31} opponentAnswer={36} correctAnswer={31} /> */}
         <StoryParagraph className="mb-3">
           בִּכְפָר קָטָן וְעַתִּיק רָחוֹק רָחוֹק מֵעַל הַר גָּבוֹהַּ, יֶשְׁנוֹ
           פֶּתַח קָסוּם...
@@ -83,7 +83,6 @@ export default function Story(props) {
           />
         </div>
       </Container>
-     
     </Template>
   );
 }

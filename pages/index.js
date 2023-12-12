@@ -16,6 +16,8 @@ import {
   moveToBattlePage,
   MULTIPLICATION_TABLE_SCREEN,
   HELP_SCREEN,
+  setSentResult,
+  FINISH_EXERCISE_BOARD,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -43,6 +45,7 @@ import MultiplicationTableScreen from "@/components/multiplication_table_screen/
 import HelpScreen from "@/components/help_screen/HelpScreen";
 import useCurrentLevel from "@/hooks/useCurrentLevel";
 import LockedLevelModal from "@/components/custom_modals/LockedLevelModal";
+import FinishBoard from "@/components/board/FinishBoard";
 
 export default function Home() {
   // dispatching actions on the redux store
@@ -51,6 +54,7 @@ export default function Home() {
   // accessing the redux store
   const battleStatus = useSelector((state) => state.battle.settings.status);
   const isLoading = useSelector((state) => state.battle.settings.loading);
+  const sentResult = useSelector((state) => state.battle.settings.sentResult);
 
   // router object to redirect to different pages
   const router = useRouter();
@@ -64,14 +68,38 @@ export default function Home() {
   const [currentSprite, setCurrentSprite] = useState(null);
   const [currentOpponent, setCurrentOpponent] = useState(null);
 
+  // level settings
+  const [currentLevelObj, setCurrentLevelObj] = useState(null);
+
   // the numbers of the exervise
   const [number1, setNumber1] = useState();
   const [number2, setNumber2] = useState();
 
-  // whether we answered the exercise or not
-  const [sentResult, setSentResult] = useState(false);
+  // the answers that the user and the opponent entered
+  const [userAnswer, setUserAnswer] = useState(null);
+  const [opponentAnswer, setOpponentAnswer] = useState(null);
 
   //TODO: add the loading state later?
+
+  const generateNewExercise = () => {
+    const [num1, num2] = generateExercise(
+      currentLevelObj.minNumber,
+      currentLevelObj.maxNumber
+    );
+    setNumber1(parseInt(num1));
+    setNumber2(parseInt(num2));
+  };
+
+  const onSendResultHandler = (event) => {
+    dispatch(setSentResult());
+    try {
+      const answer = parseInt(event.target.value);
+      setUserAnswer(answer);
+    } catch (error) {
+      console.log("something went wrong!"); //TODO: later deal with different error cases!
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     dispatch(moveToBattlePage());
@@ -103,8 +131,15 @@ export default function Home() {
       var currentSprite = sprites.filter(
         (spriteObj) => spriteObj.id == currentLevelObj.opponentID
       )[0];
-
+      const [num1, num2] = generateExercise(
+        currentLevelObj.minNumber,
+        currentLevelObj.maxNumber
+      );
+      setNumber1(num1);
+      setNumber2(num2);
       setCurrentSprite(currentSprite);
+
+      // opponent object
       setCurrentOpponent(
         new OpponentPlayer(
           currentSprite.id,
@@ -114,12 +149,7 @@ export default function Home() {
         )
       );
 
-      const [num1, num2] = generateExercise(
-        currentLevelObj.minNumber,
-        currentLevelObj.maxNumber
-      );
-      setNumber1(num1);
-      setNumber2(num2);
+      // new exercise
 
       // after we finished processing all the data we can load the animation
       dispatch(startEntryAnimation()); //? that means we finished loading
@@ -147,7 +177,16 @@ export default function Home() {
                   <Sprite src={currentSprite.path} />
                   <TextBox content={currentSprite.initialMessage} />
                 </div>
-                <Board num1={number1} num2={number2} className="mb-5" />
+                {battleStatus === IN_BATTLE && (
+                  <Board num1={number1} num2={number2} className="mb-5" />
+                )}
+                {battleStatus === FINISH_EXERCISE_BOARD && (
+                  <FinishBoard
+                    userAnswer={userAnswer}
+                    opponentAnswer={opponentAnswer}
+                    correctAnswer={number1 * number2}
+                  />
+                )}
                 <div className="w-full flex mt-7">
                   <input
                     type="text"
@@ -157,7 +196,7 @@ export default function Home() {
                   {!sentResult && (
                     <button
                       className="text-white bg-purple-600 p-2 w-3/12 hover:bg-purple-700"
-                      onClick={() => setSentResult(true)}
+                      onClick={() => dispatch(setSentResult())}
                     >
                       שלח
                     </button>

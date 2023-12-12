@@ -4,6 +4,7 @@ export const INACTIVE = "INACTIVE"; // outside of the battle page
 export const LOADING = "LOADING";
 export const ENTRY_ANIMATION = "ENTRY_ANIMATION";
 export const IN_BATTLE = "IN_BATTLE";
+export const FINISH_EXERCISE_BOARD = "FINISH_BOARD";
 export const PAUSE_SCREEN = "PAUSE_SCREEN";
 export const MUL_SCREEN = "MUL_SCREEN";
 export const HELP_SCREEN = "HELP_SCREEN";
@@ -16,6 +17,10 @@ const initialState = {
     pause: false,
     status: INACTIVE,
     loading: false,
+    sentResult: false,
+    opponentSentResult: false,
+    shortenedTime: false,
+    timeOver: false,
   },
 };
 
@@ -60,6 +65,25 @@ const battleSlice = createSlice({
       state.settings.inBattle = true;
       state.settings.status = IN_BATTLE;
     },
+    setSentResult: (state) => {
+      state.settings.sentResult = true;
+    },
+
+    setOpponentSentResult: (state) => {
+      state.settings.opponentSentResult = true;
+    },
+    resetSettingsNewExercise: (state) => {
+      state.settings.opponentSentResult = false;
+      state.settings.sentResult = false;
+      state.settings.shortenedTime = false;
+      state.settings.timeOver = false;
+    },
+    shortenTime: (state) => {
+      state.settings.shortenedTime = true;
+    },
+    setTimeOver: (state) => {
+      state.settings.timeOver = true;
+    },
   },
 });
 
@@ -73,6 +97,11 @@ export const {
   setStatus,
   moveToBattlePage,
   unPauseGame,
+  setSentResult,
+  setOpponentSentResult,
+  resetSettingsNewExercise,
+  shortenTime,
+  setTimeOver,
 } = battleSlice.actions;
 
 export default battleSlice.reducer;

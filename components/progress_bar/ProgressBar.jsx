@@ -20,7 +20,9 @@ export default function ProgressBar(props) {
         transition={progressBarTransition}
         animate={{ width: ["0%", `${props.progress}%`], speed: 3 }}
       >
-        <p className="text-center font-bold text-white">{props.progress}</p>
+        <p className="text-center font-bold px-2 text-white">
+          {props.progress}
+        </p>
       </motion.div>
     </div>
   );

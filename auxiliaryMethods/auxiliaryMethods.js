@@ -14,4 +14,13 @@ export function getRandomElement(list) {
 export function getRandomNumber(min, max) {
   return parseInt(Math.random() * (max - min) + min);
 }
- 
+
+export function floatToPercent(floatNumber) {
+  // Check if the input is within the valid range
+  if (floatNumber < 0 || floatNumber > 1) {
+    return -1; // Error!
+  }
+
+  // Convert float to percentage and round to the nearest whole number
+  return Math.round(floatNumber * 100);
+}
