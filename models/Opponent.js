@@ -26,10 +26,11 @@ export default class OpponentPlayer {
     const successChance = 100 - this.mistakeChance;
 
     let randomNumber = getRandomNumber(0, 100);
+
     if (randomNumber > successChance) {
       // then the player will be mistaken
       // calaculate the interval of the mistake
-      const interval = Math.max((mistakeAccuracy / 100) * actualResult, 1);
+      const interval = Math.max((this.mistakeAccuracy / 100) * actualResult, 1);
 
       // A mistaken random result
       const result =

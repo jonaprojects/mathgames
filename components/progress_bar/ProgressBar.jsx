@@ -18,11 +18,11 @@ export default function ProgressBar(props) {
       )}
       <motion.div
         className={`h-full bg-purple-600 rounded-xl `}
-        style={{
-          width: `${props.progress}%`,
-        }}
         transition={progressBarTransition}
-        animate={{ width: ["0%", `${props.progress}%`], speed: 3 }}
+        animate={{
+          width: [`${props.initialProgress ?? "0"}%`, `${props.progress}%`],
+          speed: 3,
+        }}
       >
         {!props.hideText && (
           <p className="text-center font-bold px-2 text-white">

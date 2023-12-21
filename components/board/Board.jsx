@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Timer from "../timer/Timer";
 import BoardContainer from "./BoardContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,16 +12,10 @@ import useBattleTimer from "@/hooks/useBattleTimer";
 import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
 
 export default function Board(props) {
-  const onTimeOverHandler = () => {
-    console.log("Time over handler is working!");
-    dispatch(setTimeOver()); // update the battle settings
-    dispatch(setStatus(FINISH_EXERCISE_BOARD));
-  };
-
   const dispatch = useDispatch();
   const [secondsLeft, setSecondsLeft] = useBattleTimer({
     totalTime: 30,
-    onTimeOver: onTimeOverHandler,
+    onTimeOver: props.onTimeOver,
   });
 
   const battleSettings = useSelector((state) => state.battle.settings);
