@@ -10,6 +10,7 @@ export const MUL_SCREEN = "MUL_SCREEN";
 export const HELP_SCREEN = "HELP_SCREEN";
 export const FINISH_SCREEN = "FINISH_SCREEN";
 export const MULTIPLICATION_TABLE_SCREEN = "MULTIPLICATION_TABLE_SCREEN";
+
 const initialState = {
   inBattlePage: false,
   settings: {
@@ -21,6 +22,7 @@ const initialState = {
     opponentSentResult: false,
     shortenedTime: false,
     timeOver: false,
+    timeLeftAfterShortened: 10,
   },
 };
 
@@ -78,9 +80,10 @@ const battleSlice = createSlice({
       state.settings.shortenedTime = false;
       state.settings.timeOver = false;
     },
-    shortenTime: (state) => {
+    setShortenedTime: (state) => {
       state.settings.shortenedTime = true;
     },
+
     setTimeOver: (state) => {
       state.settings.timeOver = true;
     },
@@ -100,7 +103,7 @@ export const {
   setSentResult,
   setOpponentSentResult,
   resetSettingsNewExercise,
-  shortenTime,
+  setShortenedTime,
   setTimeOver,
 } = battleSlice.actions;
 

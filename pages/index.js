@@ -18,6 +18,7 @@ import {
   HELP_SCREEN,
   setSentResult,
   FINISH_EXERCISE_BOARD,
+  setShortenedTime,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -39,13 +40,15 @@ import LoadingScreen from "@/components/loading_screen/LoadingScreen";
 
 // models
 import OpponentPlayer from "@/models/Opponent";
-import generateExercise from "@/models/ExerciseGenerator";
 import PauseScreen from "@/components/pause_screen/PauseScreen";
 import MultiplicationTableScreen from "@/components/multiplication_table_screen/MultiplicationTableScreen";
 import HelpScreen from "@/components/help_screen/HelpScreen";
 import useCurrentLevel from "@/hooks/useCurrentLevel";
 import LockedLevelModal from "@/components/custom_modals/LockedLevelModal";
 import FinishBoard from "@/components/board/FinishBoard";
+import TimeBar from "@/components/time_bar/TimeBar";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import useCurrentExercise from "@/hooks/useCurrentExercise";
 
 export default function Home() {
   // dispatching actions on the redux store
@@ -60,7 +63,8 @@ export default function Home() {
   const router = useRouter();
 
   // the current level that the user is in according to the local storage
-  const [currentLevel, setCurrentLevel, isLocked] = useCurrentLevel();
+  const [currentLevel, setCurrentLevel, isLocked, extractLevelObjFromJson] =
+    useCurrentLevel();
 
   const [isLevelLocked, setIsLevelLocked] = useState(false);
 
@@ -68,12 +72,8 @@ export default function Home() {
   const [currentSprite, setCurrentSprite] = useState(null);
   const [currentOpponent, setCurrentOpponent] = useState(null);
 
-  // level settings
-  const [currentLevelObj, setCurrentLevelObj] = useState(null);
-
   // the numbers of the exervise
-  const [number1, setNumber1] = useState();
-  const [number2, setNumber2] = useState();
+  const [number1, number2, loadNewExercise] = useCurrentExercise();
 
   // the answers that the user and the opponent entered
   const [userAnswer, setUserAnswer] = useState(null);
@@ -81,24 +81,13 @@ export default function Home() {
 
   //TODO: add the loading state later?
 
-  const generateNewExercise = () => {
-    const [num1, num2] = generateExercise(
-      currentLevelObj.minNumber,
-      currentLevelObj.maxNumber
-    );
-    setNumber1(parseInt(num1));
-    setNumber2(parseInt(num2));
+  const onSendResultHandler = () => {
+    dispatch(setSentResult(true));
+    setTimeout(() => dispatch(setShortenedTime(true)), 1000);
   };
 
-  const onSendResultHandler = (event) => {
-    dispatch(setSentResult());
-    try {
-      const answer = parseInt(event.target.value);
-      setUserAnswer(answer);
-    } catch (error) {
-      console.log("something went wrong!"); //TODO: later deal with different error cases!
-      console.log(error);
-    }
+  const onChangeInputHandler = (event) => {
+    setUserAnswer(event.target.value);
   };
 
   useEffect(() => {
@@ -112,42 +101,39 @@ export default function Home() {
 
   useEffect(() => {
     if (router.isReady) {
-      const levels = levelsData.levels; // TODO: export this to a useLevel() hook perhaps?
-      const currentLevelNumber = Number(router.query.level);
-      console.log("current level number: ", typeof currentLevelNumber);
-
-      // check if the level is locked
-      if (isLocked(currentLevelNumber)) {
+      const currentLevelObj = extractLevelObjFromJson(
+        levelsData,
+        router.query.level
+      );
+      if (currentLevelObj === null) {
+        // then the level is locked!
         console.log("The level is locked!");
         setIsLevelLocked(true);
-        //TODO: update somehow the redux storage accordingly!
       }
 
-      const currentLevelObj = levels.filter(
-        (level) => level.levelNumber === currentLevelNumber
-      )[0];
-      console.log("The current opponent id: ", currentLevelObj);
-      const sprites = spritesData.sprites; //TODO: export this to a useSprite() hook?
+      // load the sprites after loading the level's data
+      const sprites = spritesData.sprites; //TODO: export this to an external hook?
       var currentSprite = sprites.filter(
         (spriteObj) => spriteObj.id == currentLevelObj.opponentID
       )[0];
-      const [num1, num2] = generateExercise(
+      setCurrentSprite(currentSprite);
+
+      // load the information about the current exercise
+
+      const [num1, num2] = loadNewExercise(
         currentLevelObj.minNumber,
         currentLevelObj.maxNumber
       );
-      setNumber1(num1);
-      setNumber2(num2);
-      setCurrentSprite(currentSprite);
 
       // opponent object
-      setCurrentOpponent(
-        new OpponentPlayer(
-          currentSprite.id,
-          currentSprite.name,
-          currentSprite.mistakeChance,
-          currentSprite.mistakeAccuracy
-        )
+      const opponentTemp = new OpponentPlayer(
+        currentSprite.id,
+        currentSprite.name,
+        currentSprite.mistakeChance,
+        currentSprite.mistakeAccuracy
       );
+      setCurrentOpponent(opponentTemp);
+      setOpponentAnswer(opponentTemp.solveExercise(num1, num2));
 
       // new exercise
 
@@ -178,7 +164,7 @@ export default function Home() {
                   <TextBox content={currentSprite.initialMessage} />
                 </div>
                 {battleStatus === IN_BATTLE && (
-                  <Board num1={number1} num2={number2} className="mb-5" />
+                  <Board num1={number1} num2={number2} />
                 )}
                 {battleStatus === FINISH_EXERCISE_BOARD && (
                   <FinishBoard
@@ -192,19 +178,24 @@ export default function Home() {
                     type="text"
                     className="bg-slate-50 text-lg p-2 w-9/12"
                     placeholder="הקלד תשובה"
+                    value={userAnswer ?? ""}
+                    onChange={onChangeInputHandler}
                   />
-                  {!sentResult && (
-                    <button
-                      className="text-white bg-purple-600 p-2 w-3/12 hover:bg-purple-700"
-                      onClick={() => dispatch(setSentResult())}
+                  {!sentResult && battleStatus === IN_BATTLE && (
+                    <PrimaryButton
+                      className="w-3/12"
+                      onClick={onSendResultHandler}
                     >
                       שלח
-                    </button>
+                    </PrimaryButton>
                   )}
-                  {sentResult && (
-                    <button className="text-white disabled cursor-default bg-purple-600 opacity-80 p-2 w-3/12">
+                  {sentResult && battleStatus === IN_BATTLE && (
+                    <PrimaryButton className="w-3/12" disabled={true}>
                       נשלח
-                    </button>
+                    </PrimaryButton>
+                  )}
+                  {sentResult && battleStatus === FINISH_EXERCISE_BOARD && (
+                    <PrimaryButton className="w-3/12">המשך</PrimaryButton>
                   )}
                 </div>
 

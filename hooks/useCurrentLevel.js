@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
+/*
+ Handle the current available level in the local storage 
+ and provide a simple API to move to the next levels and to 
+ not allow going to locked levels.
+*/
 export default function useCurrentLevel(props) {
   const [currentLevel, setCurrentLevel] = useState(1);
 
@@ -31,5 +36,22 @@ export default function useCurrentLevel(props) {
     return levelNum > currentLevel;
   };
 
-  return [currentLevel, gotoNextLevel, isLocked];
+  const extractLevelObjFromJson = (levelsData, desiredLevelNum) => {
+    const levels = levelsData.levels;
+    const currentLevelNumber = Number(desiredLevelNum);
+    console.log("current level number: ", typeof currentLevelNumber);
+
+    // check if the level is locked
+    if (isLocked(currentLevelNumber)) {
+      return null; //? Returning null means that the level is locked!
+    }
+
+    const currentLevelObj = levels.filter(
+      (level) => level.levelNumber === currentLevelNumber
+    )[0];
+
+    return currentLevelObj;
+  };
+
+  return [currentLevel, gotoNextLevel, isLocked, extractLevelObjFromJson];
 }
