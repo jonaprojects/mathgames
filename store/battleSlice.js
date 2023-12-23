@@ -74,18 +74,21 @@ const battleSlice = createSlice({
     setOpponentSentResult: (state) => {
       state.settings.opponentSentResult = true;
     },
-    resetSettingsNewExercise: (state) => {
-      state.settings.opponentSentResult = false;
-      state.settings.sentResult = false;
-      state.settings.shortenedTime = false;
-      state.settings.timeOver = false;
-    },
     setShortenedTime: (state) => {
       state.settings.shortenedTime = true;
     },
 
     setTimeOver: (state) => {
       state.settings.timeOver = true;
+    },
+    resetSettingsNewExercise: (state) => {
+      state.settings.sentResult = false;
+      state.settings.pause = false;
+      state.settings.loading = false;
+      state.settings.timeOver = false;
+      state.settings.opponentSentResult = false;
+      state.settings.inBattle = true;
+      state.settings.status = IN_BATTLE;
     },
   },
 });

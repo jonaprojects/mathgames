@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import usePlayer from "./usePlayer";
 
+// Extend this with more states.
+
 export default function useOpponent() {
   const [
     opponentScore,
@@ -9,14 +11,14 @@ export default function useOpponent() {
     setOpponentAnswer,
   ] = usePlayer();
 
-  const [opponentObj, setOpponentObj] = useState(null);
+  const [opponentSprite, setOpponentSprite] = useState(null);
 
   return [
-    opponentScore, 
+    opponentScore,
     increaseOpponentScore,
     opponentAnswer,
     setOpponentAnswer,
-    opponentObj,
-    setOpponentObj
-  ]
+    opponentSprite,
+    setOpponentSprite,
+  ];
 }

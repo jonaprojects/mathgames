@@ -5,8 +5,14 @@ import { useState, useEffect } from "react";
  and provide a simple API to move to the next levels and to 
  not allow going to locked levels.
 */
+
+//! Perhaps separate this into two seperate custom hooks. one for the numbers and the other for the level data.
+
 export default function useCurrentLevel(props) {
+  // current level number
   const [currentLevel, setCurrentLevel] = useState(1);
+
+  const [currentLevelObj, setCurrentLevelObj] = useState(null);
 
   useEffect(() => {
     // make sure our state is updated with the local storage
@@ -46,12 +52,19 @@ export default function useCurrentLevel(props) {
       return null; //? Returning null means that the level is locked!
     }
 
-    const currentLevelObj = levels.filter(
+    const levelObj = levels.filter(
       (level) => level.levelNumber === currentLevelNumber
     )[0];
-
-    return currentLevelObj;
+    setCurrentLevelObj(currentLevelObj);
+    return levelObj;
   };
 
-  return [currentLevel, gotoNextLevel, isLocked, extractLevelObjFromJson];
+  return [
+    currentLevel,
+    gotoNextLevel,
+    isLocked,
+    currentLevelObj,
+    setCurrentLevelObj,
+    extractLevelObjFromJson,
+  ];
 }

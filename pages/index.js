@@ -21,8 +21,12 @@ import {
   setSentResult,
   FINISH_EXERCISE_BOARD,
   setShortenedTime,
+  resetSettingsNewExercise,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
+
+// auxiliary methods
+import { solveExercise } from "@/auxiliaryMethods/opponent";
 
 // custom components
 import Sprite from "@/components/sprite/Sprite";
@@ -40,8 +44,6 @@ import spritesData from "../data/sprites.json";
 
 import LoadingScreen from "@/components/loading_screen/LoadingScreen";
 
-// models
-import OpponentPlayer from "@/models/Opponent";
 import PauseScreen from "@/components/pause_screen/PauseScreen";
 import MultiplicationTableScreen from "@/components/multiplication_table_screen/MultiplicationTableScreen";
 import HelpScreen from "@/components/help_screen/HelpScreen";
@@ -67,13 +69,18 @@ export default function Home() {
   const router = useRouter();
 
   // the current level that the user is in according to the local storage
-  const [currentLevel, setCurrentLevel, isLocked, extractLevelObjFromJson] =
-    useCurrentLevel();
+  const [
+    currentLevel,
+    setCurrentLevel,
+    isLocked,
+    currentLevelObj,
+    setCurrentLevelObj,
+    extractLevelObjFromJson,
+  ] = useCurrentLevel();
 
   const [isLevelLocked, setIsLevelLocked] = useState(false);
 
   // sprites
-  const [currentSprite, setCurrentSprite] = useState(null);
 
   // the numbers of the exervise
   const [number1, number2, loadNewExercise] = useCurrentExercise();
@@ -86,19 +93,36 @@ export default function Home() {
     increaseOpponentScore,
     opponentAnswer,
     setOpponentAnswer,
-    opponentObj,
-    setOpponentObj,
+    currentOpponentSprite,
+    setOpponentSprite,
   ] = useOpponent();
 
   //TODO: add the loading state later?
 
   const onSendResultHandler = useCallback(() => {
+    // This will be triggered when the user answers the exercise
     dispatch(setSentResult(true));
     setShortenedTime(true);
   }, [dispatch]);
 
+  const onNextExerciseHandler = () => {
+    dispatch(resetSettingsNewExercise());
+
+    const [num1, num2] = loadNewExercise(
+      currentLevelObj.minNumber,
+      currentLevelObj.maxNumber
+    );
+    loadOpponentAnswer(
+      num1,
+      num2,
+      currentLevelObj.mistakeChance,
+      currentLevelObj.opponentMistakeAccuracy
+    );
+  };
+  
   //TODO:  move this logic to somewhere perhaps?
-  const checkAnswers = () => {
+  const checkAnswers = useCallback(() => {
+    // Checking if the user and the oppponent were each right, and increasing the score accordingly
     if (userAnswer == correctAnswer) {
       increaseUserScore(20); //Todo: change from a fixed number
     }
@@ -106,16 +130,42 @@ export default function Home() {
     if (opponentAnswer == correctAnswer) {
       increaseOpponentScore(20); //Todo: change from a fixed number
     }
-  };
+  }, [
+    userAnswer,
+    correctAnswer,
+    opponentAnswer,
+    increaseUserScore,
+    increaseOpponentScore,
+  ]);
+
   const onTimeOverHandler = useCallback(() => {
+    /*
+    When time to answer the exercises over, move to the finish screen,
+    check the Answers, and update the scores accordingly. 
+    This will be triggered when the time is over.
+     */
     console.log("Time over handler is working!");
     dispatch(setTimeOver()); // update the battle settings
     dispatch(setStatus(FINISH_EXERCISE_BOARD));
     checkAnswers();
-  }, [dispatch, userAnswer, correctAnswer, increaseUserScore, checkAnswers]);
+  }, [dispatch, checkAnswers]);
 
   const onChangeInputHandler = (event) => {
     setUserAnswer(event.target.value);
+  };
+
+  const loadOpponentAnswer = (num1, num2, mistakeChance, mistakeAccuracy) => {
+    const tempAns = solveExercise(num1, num2, mistakeChance, mistakeAccuracy);
+    setOpponentAnswer(tempAns);
+  };
+
+  const loadOpponentSprite = (levelObj) => {
+    const sprites = spritesData.sprites; //TODO: export this to an external hook?
+    var currentSpriteTemp = sprites.filter(
+      (spriteObj) => spriteObj.id == levelObj.opponentID
+    )[0];
+    setOpponentSprite(currentSpriteTemp);
+    return currentSpriteTemp; // to use locally until the state updates.
   };
 
   useEffect(() => {
@@ -129,43 +179,29 @@ export default function Home() {
 
   useEffect(() => {
     if (router.isReady) {
-      const currentLevelObj = extractLevelObjFromJson(
-        levelsData,
-        router.query.level
-      );
-      if (currentLevelObj === null) {
+      const levelObj = extractLevelObjFromJson(levelsData, router.query.level);
+      if (levelObj === null) {
         // then the level is locked!
         console.log("The level is locked!");
         setIsLevelLocked(true);
       }
-
+      setCurrentLevelObj(levelObj);
       // load the sprites after loading the level's data
-      const sprites = spritesData.sprites; //TODO: export this to an external hook?
-      var currentSpriteTemp = sprites.filter(
-        (spriteObj) => spriteObj.id == currentLevelObj.opponentID
-      )[0];
-      setCurrentSprite(currentSpriteTemp);
+      const currentOpponentSprite = loadOpponentSprite(levelObj);
 
       // load the information about the current exercise
-
+      // the loadNewExercise method implicitly updates the numbers states.
       const [num1, num2] = loadNewExercise(
-        currentLevelObj.minNumber,
-        currentLevelObj.maxNumber
+        levelObj.minNumber,
+        levelObj.maxNumber
       );
-
       // opponent object
-      const opponentTemp = new OpponentPlayer(
-        currentSpriteTemp.id,
-        currentSpriteTemp.name,
-        currentLevelObj.mistakeChance,
+      loadOpponentAnswer(
         num1,
         num2,
-        currentLevelObj.opponentMistakeAccuracy
+        levelObj.mistakeChance,
+        levelObj.opponentMistakeAccuracy
       );
-      setOpponentObj(opponentTemp);
-      const tempAns = opponentTemp.solveExercise(num1, num2);
-      console.log("opponent answer: ", tempAns);
-      setOpponentAnswer(tempAns);
 
       // new exercise
 
@@ -192,8 +228,8 @@ export default function Home() {
               <div className=" flex flex-col items-center relative">
                 <ProgressBar progress={opponentScore} className="mt-6 mb-3" />
                 <div className="flex md:gap-2 items-center justify-center mb-5">
-                  <Sprite src={currentSprite.path} />
-                  <TextBox content={currentSprite.initialMessage} />
+                  <Sprite src={currentOpponentSprite.path} />
+                  <TextBox content={currentOpponentSprite.initialMessage} />
                 </div>
                 {battleStatus === IN_BATTLE && (
                   <Board
@@ -231,7 +267,12 @@ export default function Home() {
                     </PrimaryButton>
                   )}
                   {sentResult && battleStatus === FINISH_EXERCISE_BOARD && (
-                    <PrimaryButton className="w-3/12">המשך</PrimaryButton>
+                    <PrimaryButton
+                      className="w-3/12"
+                      onClick={onNextExerciseHandler}
+                    >
+                      המשך
+                    </PrimaryButton>
                   )}
                 </div>
 
@@ -251,7 +292,7 @@ export default function Home() {
             </Container>
           )}
       </Template>
-      <VersusScreen opponentSprite={currentSprite} />
+      <VersusScreen opponentSprite={currentOpponentSprite} />
     </>
   );
 }
