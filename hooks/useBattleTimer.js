@@ -19,6 +19,7 @@ export default function useBattleTimer({ totalTime, onTimeOver }) {
     }
   }, [onTimeOver]);
 
+  // shortening time the user answers a question
   useEffect(() => {
     if (battleSettings.status !== IN_BATTLE) {
       return;
@@ -46,6 +47,8 @@ export default function useBattleTimer({ totalTime, onTimeOver }) {
     battleSettings.shortenedTime,
     secondsLeft,
   ]);
+
+  // normal decrease of the time
   useEffect(() => {
     const decreaseTime = () => {
       if (secondsLeft > 0 && battleSettings.status === IN_BATTLE) {
@@ -55,7 +58,10 @@ export default function useBattleTimer({ totalTime, onTimeOver }) {
     var intervalObj = null;
     if (battleSettings.status === IN_BATTLE) {
       intervalObj = setInterval(decreaseTime, 1000);
-      if (secondsLeft <= 0 && intervalObj !== null) {
+      if (
+        (secondsLeft <= 0 || battleSettings.timeOver) &&
+        intervalObj !== null
+      ) {
         clearInterval(intervalObj);
         onTimeOverHandler();
       }

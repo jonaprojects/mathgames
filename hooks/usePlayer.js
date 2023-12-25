@@ -8,5 +8,5 @@ export default function usePlayer() {
     setCurrentScore((prevScore) => prevScore + reward);
   };
 
-  return [currentScore, increaseScore, answer, setAnswer];
+  return [currentScore, setCurrentScore, increaseScore, answer, setAnswer];
 }

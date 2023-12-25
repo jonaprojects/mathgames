@@ -22,6 +22,7 @@ import {
   FINISH_EXERCISE_BOARD,
   setShortenedTime,
   resetSettingsNewExercise,
+  setOpponentSentResult,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -55,6 +56,7 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import useCurrentExercise from "@/hooks/useCurrentExercise";
 import usePlayer from "@/hooks/usePlayer";
 import useOpponent from "@/hooks/useOpponent";
+import { getRandomNumber } from "@/auxiliaryMethods/auxiliaryMethods";
 
 export default function Home() {
   // dispatching actions on the redux store
@@ -64,6 +66,12 @@ export default function Home() {
   const battleStatus = useSelector((state) => state.battle.settings.status);
   const isLoading = useSelector((state) => state.battle.settings.loading);
   const sentResult = useSelector((state) => state.battle.settings.sentResult);
+  const opponentSentResult = useSelector(
+    (state) => state.battle.settings.opponentSentResult
+  );
+  const shortenedTime = useSelector(
+    (state) => state.battle.settings.shortenedTime
+  );
 
   // router object to redirect to different pages
   const router = useRouter();
@@ -87,9 +95,16 @@ export default function Home() {
   const correctAnswer = number1 * number2; // might be NaN at the beginning
 
   // handling the two players
-  const [userScore, increaseUserScore, userAnswer, setUserAnswer] = usePlayer();
+  const [
+    userScore,
+    setUserScore,
+    increaseUserScore,
+    userAnswer,
+    setUserAnswer,
+  ] = usePlayer();
   const [
     opponentScore,
+    setOpponentScore,
     increaseOpponentScore,
     opponentAnswer,
     setOpponentAnswer,
@@ -103,6 +118,21 @@ export default function Home() {
     // This will be triggered when the user answers the exercise
     dispatch(setSentResult(true));
     setShortenedTime(true);
+    if (!opponentSentResult) {
+      // if the opponent hasn't already sent a result
+      // then we don't want the user to wait a lot of time!
+      let delay = getRandomNumber(1500, 4500);
+      console.log("the random number is ", delay);
+      if (shortenedTime) {
+        // if the time is low don't let the user wait at all.
+        delay = 0;
+      }
+      setTimeout(() => {
+        //TODO: clear timeout!
+        dispatch(setOpponentSentResult());
+        dispatch(setTimeOver());
+      }, delay);
+    }
   }, [dispatch]);
 
   const onNextExerciseHandler = () => {
@@ -119,16 +149,41 @@ export default function Home() {
       currentLevelObj.opponentMistakeAccuracy
     );
   };
-  
+
   //TODO:  move this logic to somewhere perhaps?
   const checkAnswers = useCallback(() => {
     // Checking if the user and the oppponent were each right, and increasing the score accordingly
+    let userGotToHundred = false,
+      opponentGotToHundred = false;
+
     if (userAnswer == correctAnswer) {
-      increaseUserScore(20); //Todo: change from a fixed number
+      if (userScore + 20 >= 100) {
+        //Todo: change from a fixed number
+        setUserScore(100);
+        userGotToHundred = true;
+      } else {
+        increaseUserScore(20);
+      }
     }
 
     if (opponentAnswer == correctAnswer) {
-      increaseOpponentScore(20); //Todo: change from a fixed number
+      if (opponentScore + 20 >= 100) {
+        //Todo: change from a fixed number
+        setOpponentScore(100);
+        opponentGotToHundred = true;
+      } else {
+        increaseOpponentScore(20);
+      }
+    }
+    if (userGotToHundred || opponentGotToHundred) {
+      // if someone got to hundred, check who's winning
+      if (userGotToHundred && opponentGotToHundred) {
+        console.log("TIE!");
+      } else if (userGotToHundred && !opponentGotToHundred) {
+        console.log("We won!");
+      } else if (opponentGotToHundred && !userGotToHundred) {
+        console.log("We lost!");
+      }
     }
   }, [
     userAnswer,
@@ -146,6 +201,8 @@ export default function Home() {
      */
     console.log("Time over handler is working!");
     dispatch(setTimeOver()); // update the battle settings
+    dispatch(setSentResult());
+    dispatch(setOpponentSentResult());
     dispatch(setStatus(FINISH_EXERCISE_BOARD));
     checkAnswers();
   }, [dispatch, checkAnswers]);
@@ -172,10 +229,6 @@ export default function Home() {
     dispatch(moveToBattlePage());
     dispatch(setLoading()); // start loading the page
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log("The battle status is ", battleStatus);
-  }, [battleStatus]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -248,9 +301,10 @@ export default function Home() {
                 <div className="w-full flex mt-7">
                   <input
                     type="text"
-                    className="bg-slate-50 text-lg p-2 w-9/12"
+                    className={`bg-slate-50 text-lg p-2 w-9/12`}
                     placeholder="הקלד תשובה"
                     value={userAnswer ?? ""}
+                    disabled={battleStatus !== IN_BATTLE || sentResult}
                     onChange={onChangeInputHandler}
                   />
                   {!sentResult && battleStatus === IN_BATTLE && (

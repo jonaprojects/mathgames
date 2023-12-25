@@ -6,6 +6,7 @@ import usePlayer from "./usePlayer";
 export default function useOpponent() {
   const [
     opponentScore,
+    setOpponentScore,
     increaseOpponentScore,
     opponentAnswer,
     setOpponentAnswer,
@@ -15,6 +16,7 @@ export default function useOpponent() {
 
   return [
     opponentScore,
+    setOpponentScore,
     increaseOpponentScore,
     opponentAnswer,
     setOpponentAnswer,
