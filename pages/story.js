@@ -14,7 +14,6 @@ import TextBox from "@/components/textbox/Textbox";
 import TalkingSprite, {
   TalkingSpriteShowOnClick,
 } from "@/components/sprite/TalkingSprite";
-import EndBoard from "@/components/board/FinishBoard";
 
 export default function Story(props) {
   const dispatch = useDispatch();

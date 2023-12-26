@@ -6,10 +6,11 @@ import { useRouter } from "next/router";
 
 export default function LockedLevelModal(props) {
   const router = useRouter();
-
   const goHome = () => {
     router.push("/levels"); //TODO: later modify?
   };
+
+
   return (
     <Modal>
       <H2 className="text-3xl md:text-4xl font-bold">

@@ -3,12 +3,9 @@ import { useRouter } from "next/router";
 
 //redux state management
 import {
-  startBattle,
   startEntryAnimation,
-  endBattle,
   ENTRY_ANIMATION,
   IN_BATTLE,
-  FINISH_SCREEN,
   setTimeOver,
   setStatus,
   INACTIVE,
@@ -23,6 +20,9 @@ import {
   setShortenedTime,
   resetSettingsNewExercise,
   setOpponentSentResult,
+  VICTORY_SCREEN,
+  LOSS_SCREEN,
+  setInFinishLevelScreen,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -57,6 +57,10 @@ import useCurrentExercise from "@/hooks/useCurrentExercise";
 import usePlayer from "@/hooks/usePlayer";
 import useOpponent from "@/hooks/useOpponent";
 import { getRandomNumber } from "@/auxiliaryMethods/auxiliaryMethods";
+import LossScreen from "@/components/finish_level_screens/LossScreen";
+
+// sounds
+//import submitSound from "/sounds/submit.mp3";
 
 export default function Home() {
   // dispatching actions on the redux store
@@ -71,6 +75,9 @@ export default function Home() {
   );
   const shortenedTime = useSelector(
     (state) => state.battle.settings.shortenedTime
+  );
+  const isOnFinishLevelScreen = useSelector(
+    (state) => state.battle.settings.inFinishLevelScreen
   );
 
   // router object to redirect to different pages
@@ -102,6 +109,7 @@ export default function Home() {
     userAnswer,
     setUserAnswer,
   ] = usePlayer();
+
   const [
     opponentScore,
     setOpponentScore,
@@ -112,16 +120,20 @@ export default function Home() {
     setOpponentSprite,
   ] = useOpponent();
 
+  // sounds
+  //const [playSubmitRes] = useSound(submitSound);
+
   //TODO: add the loading state later?
 
   const onSendResultHandler = useCallback(() => {
     // This will be triggered when the user answers the exercise
     dispatch(setSentResult(true));
     setShortenedTime(true);
+    //playSubmitRes();
     if (!opponentSentResult) {
       // if the opponent hasn't already sent a result
       // then we don't want the user to wait a lot of time!
-      let delay = getRandomNumber(1500, 4500);
+      let delay = getRandomNumber(1000, 4000);
       console.log("the random number is ", delay);
       if (shortenedTime) {
         // if the time is low don't let the user wait at all.
@@ -155,12 +167,11 @@ export default function Home() {
     // Checking if the user and the oppponent were each right, and increasing the score accordingly
     let userGotToHundred = false,
       opponentGotToHundred = false;
-
     if (userAnswer == correctAnswer) {
       if (userScore + 20 >= 100) {
         //Todo: change from a fixed number
-        setUserScore(100);
         userGotToHundred = true;
+        setUserScore(100);
       } else {
         increaseUserScore(20);
       }
@@ -175,16 +186,7 @@ export default function Home() {
         increaseOpponentScore(20);
       }
     }
-    if (userGotToHundred || opponentGotToHundred) {
-      // if someone got to hundred, check who's winning
-      if (userGotToHundred && opponentGotToHundred) {
-        console.log("TIE!");
-      } else if (userGotToHundred && !opponentGotToHundred) {
-        console.log("We won!");
-      } else if (opponentGotToHundred && !userGotToHundred) {
-        console.log("We lost!");
-      }
-    }
+    checkWinner(userGotToHundred, opponentGotToHundred);
   }, [
     userAnswer,
     correctAnswer,
@@ -192,6 +194,23 @@ export default function Home() {
     increaseUserScore,
     increaseOpponentScore,
   ]);
+
+  const checkWinner = useCallback((userGotToHundred, opponentGotToHundred) => {
+    console.log("checking who's winning!");
+    if (userGotToHundred || opponentGotToHundred) {
+      console.log("someone got a hunderd!");
+      // if someone got to hundred, check who's winning
+      // if someone won, we're going to one of the finish level screens
+      dispatch(setInFinishLevelScreen(true));
+      if (userGotToHundred && opponentGotToHundred) {
+      } else if (userGotToHundred && !opponentGotToHundred) {
+        dispatch(setStatus(VICTORY_SCREEN));
+      } else if (opponentGotToHundred && !userGotToHundred) {
+        console.log("showing loss screen");
+        dispatch(setStatus(LOSS_SCREEN));
+      }
+    }
+  }, []);
 
   const onTimeOverHandler = useCallback(() => {
     /*
@@ -343,6 +362,9 @@ export default function Home() {
               )}
               {battleStatus === HELP_SCREEN && <HelpScreen />}
               {isLevelLocked && <LockedLevelModal />}
+              {isOnFinishLevelScreen && battleStatus === LOSS_SCREEN && (
+                <LossScreen />
+              )}
             </Container>
           )}
       </Template>

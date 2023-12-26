@@ -2,7 +2,7 @@
   "levels": [
     {
       "levelNumber": 1,
-      "mistakeChance": 85,
+      "mistakeChance": 0,
       "timePerQuestion": 30,
       "totalTimeBonus": 10,
       "minNumber": 1,

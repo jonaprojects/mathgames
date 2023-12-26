@@ -10,6 +10,8 @@ export const MUL_SCREEN = "MUL_SCREEN";
 export const HELP_SCREEN = "HELP_SCREEN";
 export const FINISH_SCREEN = "FINISH_SCREEN";
 export const MULTIPLICATION_TABLE_SCREEN = "MULTIPLICATION_TABLE_SCREEN";
+export const LOSS_SCREEN = "LOSS_SCREEN";
+export const VICTORY_SCREEN = "VICTORY_SCREEN";
 
 const initialState = {
   inBattlePage: false,
@@ -23,6 +25,7 @@ const initialState = {
     shortenedTime: false,
     timeOver: false,
     timeLeftAfterShortened: 10,
+    inFinishLevelScreen: false,
   },
 };
 
@@ -45,7 +48,7 @@ const battleSlice = createSlice({
     },
 
     endBattle: (state) => {
-      state.settings.status = FINISH_SCREEN;
+      state.settings.status = FINISH_LEVEL_SCREEN;
     },
     setInactive: (state) => {
       // when leaving to other pages
@@ -77,7 +80,9 @@ const battleSlice = createSlice({
     setShortenedTime: (state) => {
       state.settings.shortenedTime = true;
     },
-
+    setInFinishLevelScreen: (state, action) => {
+      state.settings.inFinishLevelScreen = action.payload;
+    },
     setTimeOver: (state) => {
       state.settings.timeOver = true;
     },
@@ -108,6 +113,7 @@ export const {
   resetSettingsNewExercise,
   setShortenedTime,
   setTimeOver,
+  setInFinishLevelScreen,
 } = battleSlice.actions;
 
 export default battleSlice.reducer;
