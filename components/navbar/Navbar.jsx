@@ -14,7 +14,7 @@ export default function Navbar() {
         </div>
         <ul className="flex mr-11 gap-3">
           <li>
-            <Link href="/levels">רמות</Link>
+            <Link href="/levels">שלבים</Link>
           </li>
           <li>
             <Link href="/story">סיפור רקע</Link>

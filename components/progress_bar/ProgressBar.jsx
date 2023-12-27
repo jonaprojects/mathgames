@@ -12,8 +12,8 @@ export default function ProgressBar(props) {
       }`}
     >
       {!props.hideText && (
-        <p className=" text-black font-bold float-left ml-2 inline-block">
-          100
+        <p className={` text-black font-bold float-left ml-2 inline-block`}>
+          100{props.sign ?? ""}
         </p>
       )}
       <motion.div
@@ -27,6 +27,7 @@ export default function ProgressBar(props) {
         {!props.hideText && (
           <p className="text-center font-bold px-2 text-white">
             {props.progress}
+            {props.sign ?? ""}
           </p>
         )}
       </motion.div>

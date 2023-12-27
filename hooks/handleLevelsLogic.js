@@ -1,3 +1,5 @@
+import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
+
 export const NUM_OF_LEVELS = 30;
 
 export const getCurrentLevel = () => {
@@ -25,7 +27,6 @@ export const isLocked = (levelNum) => {
   return levelNum > currentLevel;
 };
 
-
 export const extractLevelObjFromJson = (levelsData, desiredLevelNum) => {
   const levels = levelsData.levels;
   const currentLevelNumber = Number(desiredLevelNum);
@@ -40,4 +41,10 @@ export const extractLevelObjFromJson = (levelsData, desiredLevelNum) => {
     (level) => level.levelNumber === currentLevelNumber
   )[0];
   return levelObj;
+};
+
+export const getLevelStatistics = () => {
+  const currentLevel = getCurrentLevel();
+  const levelsProgressPercentage = floatToPercent(currentLevel / NUM_OF_LEVELS);
+  return [currentLevel, NUM_OF_LEVELS, levelsProgressPercentage];
 };
