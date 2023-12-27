@@ -9,7 +9,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: #000000;
   background: #f5f5f5;
   direction: rtl;
   background-repeat: no-repeat;
