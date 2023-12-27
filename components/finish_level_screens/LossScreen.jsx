@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "../modal/Modal";
 import Image from "next/image";
-import { H1 } from "../typography/Headers";
+import { H1, ModalHeader } from "../typography/Headers";
 import SVGButton from "../buttons/SVGButton";
 import { useRouter } from "next/router";
 
@@ -17,7 +17,7 @@ export default function LossScreen(props) {
 
   return (
     <Modal>
-      <H1 className="mb-2">הפסד!</H1>
+      <ModalHeader className="mb-2">הפסד!</ModalHeader>
       <p>אולי בפעם הבאה תצליחו להביס את פיני. אל תוותרו!</p>
       <div className="flex gap-2 mt-7">
         <SVGButton
@@ -31,7 +31,7 @@ export default function LossScreen(props) {
         />
         <SVGButton
           src="/home.svg"
-          alt="נסה שוב"
+          alt="בית"
           width={24}
           height={24}
           onClick={onHome}

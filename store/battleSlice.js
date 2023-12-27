@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// STATUS VALUES (SCREENS - THIS WILL FORCE THE UI)
 export const INACTIVE = "INACTIVE"; // outside of the battle page
 export const LOADING = "LOADING";
 export const ENTRY_ANIMATION = "ENTRY_ANIMATION";
 export const IN_BATTLE = "IN_BATTLE";
 export const FINISH_EXERCISE_BOARD = "FINISH_BOARD";
-export const PAUSE_SCREEN = "PAUSE_SCREEN";
 export const MUL_SCREEN = "MUL_SCREEN";
-export const HELP_SCREEN = "HELP_SCREEN";
 export const FINISH_SCREEN = "FINISH_SCREEN";
-export const MULTIPLICATION_TABLE_SCREEN = "MULTIPLICATION_TABLE_SCREEN";
 export const LOSS_SCREEN = "LOSS_SCREEN";
 export const VICTORY_SCREEN = "VICTORY_SCREEN";
+export const LOCKED_LEVEL = "LOCKED_LEVEL";
+
+// MODALS - CAN BE ON TOP OF THE SCREENS
+export const MULTIPLICATION_TABLE_MODAL = "MULTIPLICATION_TABLE_MODAL";
+export const HELP_MODAL = "HELP_MODAL";
+export const PAUSE_MODAL = "PAUSE_MODAL";
 
 const initialState = {
   inBattlePage: false,
@@ -26,6 +30,8 @@ const initialState = {
     timeOver: false,
     timeLeftAfterShortened: 10,
     inFinishLevelScreen: false,
+    currentModal: null,
+    addedScores: false,
   },
 };
 
@@ -46,10 +52,10 @@ const battleSlice = createSlice({
       state.settings.status = IN_BATTLE;
       state.settings.inBattle = true;
     },
-
-    endBattle: (state) => {
-      state.settings.status = FINISH_LEVEL_SCREEN;
+    setAddedScores: (state, action) => {
+      state.settings.addedScores = action.payload;
     },
+
     setInactive: (state) => {
       // when leaving to other pages
       state.settings.status = INACTIVE;
@@ -60,6 +66,10 @@ const battleSlice = createSlice({
     setLoading: (state) => {
       state.settings.loading = true;
       state.settings.status = LOADING;
+    },
+    setLocked: (state) => {
+      state.settings.status = LOCKED_LEVEL;
+      state.settings.loading = false;
     },
     pauseGame: (state) => {
       state.settings.pause = true;
@@ -73,7 +83,9 @@ const battleSlice = createSlice({
     setSentResult: (state) => {
       state.settings.sentResult = true;
     },
-
+    setCurrentModal: (state, action) => {
+      state.settings.currentModal = action.payload;
+    },
     setOpponentSentResult: (state) => {
       state.settings.opponentSentResult = true;
     },
@@ -94,6 +106,9 @@ const battleSlice = createSlice({
       state.settings.opponentSentResult = false;
       state.settings.inBattle = true;
       state.settings.status = IN_BATTLE;
+      state.settings.addedScores = false;
+      state.settings.currentModal = null;
+      
     },
   },
 });
@@ -101,7 +116,6 @@ const battleSlice = createSlice({
 export const {
   startEntryAnimation,
   startBattle,
-  endBattle,
   setInactive,
   setLoading,
   pauseGame,
@@ -114,6 +128,9 @@ export const {
   setShortenedTime,
   setTimeOver,
   setInFinishLevelScreen,
+  setLocked,
+  setCurrentModal,
+  setAddedScores,
 } = battleSlice.actions;
 
 export default battleSlice.reducer;

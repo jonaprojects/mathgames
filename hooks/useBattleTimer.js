@@ -56,7 +56,7 @@ export default function useBattleTimer({ totalTime, onTimeOver }) {
       }
     };
     var intervalObj = null;
-    if (battleSettings.status === IN_BATTLE) {
+    if (battleSettings.status === IN_BATTLE && battleSettings.inBattle) {
       intervalObj = setInterval(decreaseTime, 1000);
       if (
         (secondsLeft <= 0 || battleSettings.timeOver) &&

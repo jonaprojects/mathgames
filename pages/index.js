@@ -11,10 +11,7 @@ import {
   INACTIVE,
   LOADING,
   setLoading,
-  PAUSE_SCREEN,
   moveToBattlePage,
-  MULTIPLICATION_TABLE_SCREEN,
-  HELP_SCREEN,
   setSentResult,
   FINISH_EXERCISE_BOARD,
   setShortenedTime,
@@ -23,6 +20,12 @@ import {
   VICTORY_SCREEN,
   LOSS_SCREEN,
   setInFinishLevelScreen,
+  LOCKED_LEVEL,
+  setLocked,
+  MULTIPLICATION_TABLE_MODAL,
+  HELP_MODAL,
+  PAUSE_MODAL,
+  setAddedScores,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -45,10 +48,14 @@ import spritesData from "../data/sprites.json";
 
 import LoadingScreen from "@/components/loading_screen/LoadingScreen";
 
-import PauseScreen from "@/components/pause_screen/PauseScreen";
-import MultiplicationTableScreen from "@/components/multiplication_table_screen/MultiplicationTableScreen";
-import HelpScreen from "@/components/help_screen/HelpScreen";
-import useCurrentLevel from "@/hooks/useCurrentLevel";
+import PauseModal from "@/components/custom_modals/PauseModal";
+import MultiplicationTableModal from "@/components/custom_modals/MultiplicationTableModal";
+import HelpModal from "@/components/custom_modals/HelpModal";
+import {
+  unlockNextLevel,
+  isLocked,
+  extractLevelObjFromJson,
+} from "@/hooks/handleLevelsLogic";
 import LockedLevelModal from "@/components/custom_modals/LockedLevelModal";
 import FinishBoard from "@/components/board/FinishBoard";
 import TimeBar from "@/components/time_bar/TimeBar";
@@ -58,6 +65,7 @@ import usePlayer from "@/hooks/usePlayer";
 import useOpponent from "@/hooks/useOpponent";
 import { getRandomNumber } from "@/auxiliaryMethods/auxiliaryMethods";
 import LossScreen from "@/components/finish_level_screens/LossScreen";
+import VictoryScreen from "@/components/finish_level_screens/VictoryScreen";
 
 // sounds
 //import submitSound from "/sounds/submit.mp3";
@@ -79,21 +87,16 @@ export default function Home() {
   const isOnFinishLevelScreen = useSelector(
     (state) => state.battle.settings.inFinishLevelScreen
   );
+  const currentModal = useSelector(
+    (state) => state.battle.settings.currentModal
+  );
 
+  const addedScores = useSelector((state) => state.battle.settings.addedScores);
   // router object to redirect to different pages
   const router = useRouter();
 
   // the current level that the user is in according to the local storage
-  const [
-    currentLevel,
-    setCurrentLevel,
-    isLocked,
-    currentLevelObj,
-    setCurrentLevelObj,
-    extractLevelObjFromJson,
-  ] = useCurrentLevel();
-
-  const [isLevelLocked, setIsLevelLocked] = useState(false);
+  const [currentLevelObj, setCurrentLevelObj] = useState(null);
 
   // sprites
 
@@ -120,6 +123,11 @@ export default function Home() {
     setOpponentSprite,
   ] = useOpponent();
 
+  // when the page is ready, just reset the scores, just in case.
+  useEffect(() => {
+    setUserScore(0);
+    setOpponentScore(0);
+  }, []);
   // sounds
   //const [playSubmitRes] = useSound(submitSound);
 
@@ -148,8 +156,13 @@ export default function Home() {
   }, [dispatch]);
 
   const onNextExerciseHandler = () => {
+    // reset the user answer for the next exercise
+    setUserAnswer("");
+
+    // reset different settings regarding the exercise
     dispatch(resetSettingsNewExercise());
 
+    // load a new exercise and the opponent's answer
     const [num1, num2] = loadNewExercise(
       currentLevelObj.minNumber,
       currentLevelObj.maxNumber
@@ -164,7 +177,11 @@ export default function Home() {
 
   //TODO:  move this logic to somewhere perhaps?
   const checkAnswers = useCallback(() => {
+    console.log("CHECKANSWERS: ADDED SOCRES -  ", addedScores);
     // Checking if the user and the oppponent were each right, and increasing the score accordingly
+    if (addedScores) {
+      return;
+    }
     let userGotToHundred = false,
       opponentGotToHundred = false;
     if (userAnswer == correctAnswer) {
@@ -187,26 +204,32 @@ export default function Home() {
       }
     }
     checkWinner(userGotToHundred, opponentGotToHundred);
+    setAddedScores(true);
+
+    // reset the user score for the next exercise
   }, [
     userAnswer,
     correctAnswer,
     opponentAnswer,
+    userScore,
+    opponentScore,
     increaseUserScore,
     increaseOpponentScore,
+    addedScores,
   ]);
 
   const checkWinner = useCallback((userGotToHundred, opponentGotToHundred) => {
     console.log("checking who's winning!");
     if (userGotToHundred || opponentGotToHundred) {
-      console.log("someone got a hunderd!");
+      console.log("someone got a hundred!");
       // if someone got to hundred, check who's winning
       // if someone won, we're going to one of the finish level screens
       dispatch(setInFinishLevelScreen(true));
       if (userGotToHundred && opponentGotToHundred) {
       } else if (userGotToHundred && !opponentGotToHundred) {
+        unlockNextLevel();
         dispatch(setStatus(VICTORY_SCREEN));
       } else if (opponentGotToHundred && !userGotToHundred) {
-        console.log("showing loss screen");
         dispatch(setStatus(LOSS_SCREEN));
       }
     }
@@ -218,13 +241,18 @@ export default function Home() {
     check the Answers, and update the scores accordingly. 
     This will be triggered when the time is over.
      */
+    if (battleStatus !== IN_BATTLE) {
+      // to make sure it doesn't get invoked accidently
+      return;
+    }
+    // to prevent this method to be invoked twice, for what ever reason
     console.log("Time over handler is working!");
     dispatch(setTimeOver()); // update the battle settings
     dispatch(setSentResult());
     dispatch(setOpponentSentResult());
     dispatch(setStatus(FINISH_EXERCISE_BOARD));
     checkAnswers();
-  }, [dispatch, checkAnswers]);
+  }, [dispatch, checkAnswers, battleStatus]);
 
   const onChangeInputHandler = (event) => {
     setUserAnswer(event.target.value);
@@ -252,10 +280,12 @@ export default function Home() {
   useEffect(() => {
     if (router.isReady) {
       const levelObj = extractLevelObjFromJson(levelsData, router.query.level);
+      setCurrentLevelObj(levelObj);
       if (levelObj === null) {
         // then the level is locked!
         console.log("The level is locked!");
-        setIsLevelLocked(true);
+        dispatch(setLocked());
+        return;
       }
       setCurrentLevelObj(levelObj);
       // load the sprites after loading the level's data
@@ -290,6 +320,13 @@ export default function Home() {
     );
   }
 
+  if (battleStatus === LOCKED_LEVEL) {
+    return (
+      <Template>
+        <LockedLevelModal />
+      </Template>
+    );
+  }
   return (
     <>
       <Template>
@@ -356,19 +393,20 @@ export default function Home() {
                 />
               </div>
               <Toolkit />
-              {battleStatus === PAUSE_SCREEN && <PauseScreen />}
-              {battleStatus === MULTIPLICATION_TABLE_SCREEN && (
-                <MultiplicationTableScreen />
-              )}
-              {battleStatus === HELP_SCREEN && <HelpScreen />}
-              {isLevelLocked && <LockedLevelModal />}
-              {isOnFinishLevelScreen && battleStatus === LOSS_SCREEN && (
-                <LossScreen />
-              )}
             </Container>
           )}
       </Template>
       <VersusScreen opponentSprite={currentOpponentSprite} />
+      {currentModal === PAUSE_MODAL && <PauseModal />}
+      {currentModal === MULTIPLICATION_TABLE_MODAL && (
+        <MultiplicationTableModal />
+      )}
+      {currentModal == HELP_MODAL && <HelpModal />}
+
+      {isOnFinishLevelScreen && battleStatus === LOSS_SCREEN && <LossScreen />}
+      {isOnFinishLevelScreen && battleStatus === VICTORY_SCREEN && (
+        <VictoryScreen nextLevel={parseInt(router.query.level) + 1} />
+      )}
     </>
   );
 }

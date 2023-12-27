@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // Custom Components
 import Container from "@/components/containers/Container";
@@ -8,14 +8,14 @@ import Template from "@/components/template/Template";
 import { H1 } from "@/components/typography/Headers";
 import { useDispatch } from "react-redux";
 import { setInactive } from "@/store/battleSlice";
-import useCurrentLevel from "@/hooks/useCurrentLevel";
 import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
+import { NUM_OF_LEVELS, getCurrentLevel } from "@/hooks/handleLevelsLogic";
+import useCurrentLevel from "@/hooks/useCurrentLevel";
 
 export default function Levels() {
-  const NUM_OF_LEVELS = 30;
   const dispatch = useDispatch();
-  const [currentLevel, gotoNextLevel, isLocked] = useCurrentLevel();
 
+  const [currentLevel, setCurrentLevel] = useCurrentLevel();
   const completionPercentage = floatToPercent(
     (currentLevel - 1) / NUM_OF_LEVELS
   );
@@ -46,7 +46,7 @@ export default function Levels() {
                   levelNum={levelNum}
                   key={levelNum}
                   className="m-0 p-0"
-                  locked={isLocked(levelNum)}
+                  locked={levelNum > currentLevel}
                 />
               );
             })}

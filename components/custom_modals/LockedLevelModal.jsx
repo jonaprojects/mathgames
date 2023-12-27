@@ -10,9 +10,8 @@ export default function LockedLevelModal(props) {
     router.push("/levels"); //TODO: later modify?
   };
 
-
   return (
-    <Modal>
+    <Modal onClose={() => {}}>
       <H2 className="text-3xl md:text-4xl font-bold">
         אופס! הרמה הזו נעולה עבורך!
       </H2>

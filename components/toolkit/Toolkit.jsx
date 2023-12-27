@@ -3,11 +3,11 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ToolkitButton from "../buttons/ToolkitButton";
 import {
-  HELP_SCREEN,
-  MULTIPLICATION_TABLE_SCREEN,
-  PAUSE_SCREEN,
+  HELP_MODAL,
+  MULTIPLICATION_TABLE_MODAL,
+  PAUSE_MODAL,
   pauseGame,
-  setStatus,
+  setCurrentModal,
 } from "@/store/battleSlice";
 import { useDispatch } from "react-redux";
 
@@ -15,19 +15,19 @@ export default function Toolkit(props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
 
-  const openPauseScreen = () => {
+  const openPauseModal = () => {
     dispatch(pauseGame());
-    dispatch(setStatus(PAUSE_SCREEN));
+    dispatch(setCurrentModal(PAUSE_MODAL));
   };
 
-  const openMultiplicationTableScreen = () => {
+  const openMultiplicationTableModal = () => {
     dispatch(pauseGame());
-    dispatch(setStatus(MULTIPLICATION_TABLE_SCREEN));
+    dispatch(setCurrentModal(MULTIPLICATION_TABLE_MODAL));
   };
 
-  const openHelpScreen = () => {
+  const openHelpModal = () => {
     dispatch(pauseGame());
-    dispatch(setStatus(HELP_SCREEN));
+    dispatch(setCurrentModal(HELP_MODAL));
   };
   const onClickHandler = () => {
     setIsExpanded((prevExpanded) => !prevExpanded); // toggle the expanded state
@@ -47,7 +47,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/pause.svg"
                 alt="עצור את המשחק"
-                onClick={openPauseScreen}
+                onClick={openPauseModal}
                 animate={{
                   x: 0,
                   rotate: 360,
@@ -65,7 +65,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/math.svg"
                 alt="לוח הכפל"
-                onClick={openMultiplicationTableScreen}
+                onClick={openMultiplicationTableModal}
                 animate={{
                   x: 0,
                   rotate: 360,
@@ -82,7 +82,7 @@ export default function Toolkit(props) {
               <ToolkitButton
                 src="/help.svg"
                 alt="עזרה"
-                onClick={openHelpScreen}
+                onClick={openHelpModal}
                 animate={{
                   x: 0,
                   rotate: 360,

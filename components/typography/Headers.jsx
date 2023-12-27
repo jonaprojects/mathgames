@@ -10,6 +10,13 @@ export function H1(props) {
   );
 }
 
+export function ModalHeader(props) {
+  return (
+    <h1 className="mb-1 md:mb-2 text-3xl md:text-4xl lg:text-5xl">
+      {props.children}
+    </h1>
+  );
+}
 export function H2(props) {
   return (
     <h1
@@ -21,5 +28,3 @@ export function H2(props) {
     </h1>
   );
 }
-
-

@@ -4,38 +4,23 @@ import Overlay from "../modal/Overlay";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 
-import {
-  HELP_SCREEN,
-  MULTIPLICATION_TABLE_SCREEN,
-  PAUSE_SCREEN,
-  setStatus,
-  startBattle,
-  unPauseGame,
-} from "@/store/battleSlice";
+import { setCurrentModal, unPauseGame } from "@/store/battleSlice";
 import { H1, H2 } from "../typography/Headers";
-import Container from "../containers/Container";
 import { TalkingSpriteShowOnClick } from "../sprite/TalkingSprite";
 
-export default function HelpScreen(props) {
+export default function HelpModal(props) {
   const [isMounted, setIsMounted] = useState(false);
-  const battleSettings = useSelector((state) => state.battle.settings);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Opened the help page!");
     setIsMounted(true);
   }, []);
 
-  const show = battleSettings.status === HELP_SCREEN;
-
-  const closeScreen = () => {
+  const closeHelpModal = () => {
+    dispatch(setCurrentModal(null));
     dispatch(unPauseGame());
-    dispatch(startBattle());
   };
   // A modal is closed by default
-  if (!show) {
-    return <></>;
-  }
 
   if (!isMounted) {
     return null;
@@ -54,12 +39,15 @@ export default function HelpScreen(props) {
   return (
     isMounted &&
     createPortal(
-      <Overlay className={`flex justify-center items-center`} close={closeScreen}>
+      <Overlay
+        className={`flex justify-center items-center`}
+        close={closeHelpModal}
+      >
         <div className=" sm:max-w-[85%] lg:max-w-4xl max-h-[85%]  relative overflow-y-scroll">
           <div className="bg-white p-6">
             <button
               className="absolute left-5 top-5 text-3xl text-slate-400 hover:text-slate-500"
-              onClick={closeScreen}
+              onClick={closeHelpModal}
             >
               ×
             </button>

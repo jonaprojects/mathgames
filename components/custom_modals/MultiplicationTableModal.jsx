@@ -2,37 +2,20 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Overlay from "../modal/Overlay";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  IN_BATTLE,
-  MULTIPLICATION_TABLE_SCREEN,
-  PAUSE_SCREEN,
-  setStatus,
-  startBattle,
-  unPauseGame,
-} from "@/store/battleSlice";
 import { H1, H2 } from "../typography/Headers";
-import Container from "../containers/Container";
-
-export default function MultiplicationTableScreen(props) {
+import { setCurrentModal, unPauseGame } from "@/store/battleSlice";
+export default function MultiplicationTableModal(props) {
   const [isMounted, setIsMounted] = useState(false);
-  const battleSettings = useSelector((state) => state.battle.settings);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Opened the multiplication table screen!");
     setIsMounted(true);
   }, []);
 
-  const show = battleSettings.status === MULTIPLICATION_TABLE_SCREEN;
-
-  const closeScreen = () => {
+  const closeMultiplicationTableModal = () => {
+    dispatch(setCurrentModal(null));
     dispatch(unPauseGame());
-    dispatch(startBattle());
   };
-  // A modal is closed by default
-  if (!show) {
-    return <></>;
-  }
 
   if (!isMounted) {
     return null;
@@ -44,7 +27,7 @@ export default function MultiplicationTableScreen(props) {
     createPortal(
       <Overlay
         className={`flex items-center justify-center`}
-        close={closeScreen}
+        close={closeMultiplicationTableModal}
       >
         <div className="px-1">
           <H1 className="mb-7 text-white">לוח הכפל</H1>
