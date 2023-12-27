@@ -8,7 +8,7 @@ export default function Level(props) {
   const router = useRouter();
 
   const onClickHandler = () => {
-    router.push({ pathname: "/", query: { level: props.levelNum } });
+    router.push({ pathname: "/play", query: { level: props.levelNum } });
   };
   return (
     <button

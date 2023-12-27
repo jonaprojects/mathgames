@@ -9,24 +9,27 @@ import { H1 } from "@/components/typography/Headers";
 import { useDispatch } from "react-redux";
 import { setInactive } from "@/store/battleSlice";
 import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
-import { NUM_OF_LEVELS, getCurrentLevel } from "@/hooks/handleLevelsLogic";
+import { getCurrentLevel } from "@/hooks/handleLevelsLogic";
 import useCurrentLevel from "@/hooks/useCurrentLevel";
+import useLevelStatistics from "@/hooks/useLevelStatistics";
 
 export default function Levels() {
   const dispatch = useDispatch();
 
-  const [currentLevel, setCurrentLevel] = useCurrentLevel();
-  const completionPercentage = floatToPercent(
-    (currentLevel - 1) / NUM_OF_LEVELS
-  );
+  const [
+    currentLevel,
+    numOfLevels,
+    levelsProgressPercentage,
+    reloadStatistics,
+  ] = useLevelStatistics();
 
   useEffect(() => {
+    reloadStatistics(); // make sure the statistics are up to date!
     dispatch(setInactive());
-    console.log("the current level is", currentLevel);
   }, []);
 
   const DUMMY_LEVELS = [];
-  for (let i = 0; i < NUM_OF_LEVELS; i++) {
+  for (let i = 0; i < numOfLevels; i++) {
     DUMMY_LEVELS.push(i + 1);
   }
 
@@ -36,9 +39,13 @@ export default function Levels() {
         <Container>
           <H1 className="mb-6 mt-5">שלבים</H1>
           <p className="text-lg text-slate-500">
-            השלמת {completionPercentage}% מהשלבים!
+            השלמת {levelsProgressPercentage}% מהשלבים!
           </p>
-          <ProgressBar progress={completionPercentage} className="mb-12" />
+          <ProgressBar
+            progress={levelsProgressPercentage}
+            className="mb-12"
+            sign="%"
+          />
           <div className="grid grid-cols-3 grid-auto-flow m-0 p-0 gap-y-4 justify-items-center content-center gap-1 md:gap-y-6 md:gap-4 md:grid-cols-4">
             {DUMMY_LEVELS.map((levelNum) => {
               return (

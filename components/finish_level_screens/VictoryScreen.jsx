@@ -16,7 +16,7 @@ export default function VictoryScreen(props) {
   };
 
   const onNextLevel = () => {
-    router.push(`/?level=${props.nextLevel}`);
+    router.push(`/play?level=${props.nextLevel}`);
   };
   return (
     <Modal onClose={onClose}>

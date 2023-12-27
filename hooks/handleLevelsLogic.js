@@ -45,6 +45,8 @@ export const extractLevelObjFromJson = (levelsData, desiredLevelNum) => {
 
 export const getLevelStatistics = () => {
   const currentLevel = getCurrentLevel();
-  const levelsProgressPercentage = floatToPercent(currentLevel / NUM_OF_LEVELS);
+  const levelsProgressPercentage = floatToPercent(
+    (currentLevel - 1) / NUM_OF_LEVELS
+  );
   return [currentLevel, NUM_OF_LEVELS, levelsProgressPercentage];
 };
