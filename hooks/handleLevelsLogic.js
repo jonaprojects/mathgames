@@ -25,6 +25,7 @@ export const isLocked = (levelNum) => {
   return levelNum > currentLevel;
 };
 
+
 export const extractLevelObjFromJson = (levelsData, desiredLevelNum) => {
   const levels = levelsData.levels;
   const currentLevelNumber = Number(desiredLevelNum);

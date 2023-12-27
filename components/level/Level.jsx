@@ -11,13 +11,14 @@ export default function Level(props) {
     router.push({ pathname: "/", query: { level: props.levelNum } });
   };
   return (
-    <div
+    <button
       className={`relative bg-${
         props.bg ?? "purple-600"
       } border-white border-4 w-16 h-16 md:w-20 md:h-20 rounded-full cursor-pointer flex justify-center items-center
       ${props.locked && lockedClasses}
       ${props.className ?? ""} `}
       onClick={onClickHandler}
+      disabled={props.locked}
     >
       <H2 className="text-white">{props.levelNum}</H2>
       {props.locked && (
@@ -30,6 +31,6 @@ export default function Level(props) {
           className="absolute -top-3"
         />
       )}
-    </div>
+    </button>
   );
 }

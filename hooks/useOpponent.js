@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import usePlayer from "./usePlayer";
 
 // Extend this with more states.

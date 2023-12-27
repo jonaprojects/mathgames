@@ -19,6 +19,12 @@ export default function VersusScreen(props) {
 
   const show = battleStatus === ENTRY_ANIMATION;
 
+  const onAnimationFinish = () => {
+    closeVersusScreen();
+    if (props.onAnimationFinish) {
+      props.onAnimationFinish();
+    }
+  };
   const closeVersusScreen = () => {
     dispatch(startBattle());
   };
@@ -98,7 +104,7 @@ export default function VersusScreen(props) {
           animate={{
             opacity: [0, 1, 0],
           }}
-          onAnimationComplete={closeVersusScreen}
+          onAnimationComplete={onAnimationFinish}
           transition={{ delay: 2.4, duration: 2, times: [null, 0.5, 1] }}
           className="absolute flex items-center justify-center w-full h-full text-center"
         >

@@ -26,6 +26,7 @@ import {
   HELP_MODAL,
   PAUSE_MODAL,
   setAddedScores,
+  resetSettingsNewLevel,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -55,6 +56,7 @@ import {
   unlockNextLevel,
   isLocked,
   extractLevelObjFromJson,
+  getCurrentLevel,
 } from "@/hooks/handleLevelsLogic";
 import LockedLevelModal from "@/components/custom_modals/LockedLevelModal";
 import FinishBoard from "@/components/board/FinishBoard";
@@ -124,10 +126,7 @@ export default function Home() {
   ] = useOpponent();
 
   // when the page is ready, just reset the scores, just in case.
-  useEffect(() => {
-    setUserScore(0);
-    setOpponentScore(0);
-  }, []);
+
   // sounds
   //const [playSubmitRes] = useSound(submitSound);
 
@@ -142,7 +141,6 @@ export default function Home() {
       // if the opponent hasn't already sent a result
       // then we don't want the user to wait a lot of time!
       let delay = getRandomNumber(1000, 4000);
-      console.log("the random number is ", delay);
       if (shortenedTime) {
         // if the time is low don't let the user wait at all.
         delay = 0;
@@ -177,7 +175,6 @@ export default function Home() {
 
   //TODO:  move this logic to somewhere perhaps?
   const checkAnswers = useCallback(() => {
-    console.log("CHECKANSWERS: ADDED SOCRES -  ", addedScores);
     // Checking if the user and the oppponent were each right, and increasing the score accordingly
     if (addedScores) {
       return;
@@ -218,22 +215,29 @@ export default function Home() {
     addedScores,
   ]);
 
-  const checkWinner = useCallback((userGotToHundred, opponentGotToHundred) => {
-    console.log("checking who's winning!");
-    if (userGotToHundred || opponentGotToHundred) {
-      console.log("someone got a hundred!");
-      // if someone got to hundred, check who's winning
-      // if someone won, we're going to one of the finish level screens
-      dispatch(setInFinishLevelScreen(true));
-      if (userGotToHundred && opponentGotToHundred) {
-      } else if (userGotToHundred && !opponentGotToHundred) {
-        unlockNextLevel();
-        dispatch(setStatus(VICTORY_SCREEN));
-      } else if (opponentGotToHundred && !userGotToHundred) {
-        dispatch(setStatus(LOSS_SCREEN));
+  const checkWinner = useCallback(
+    (userGotToHundred, opponentGotToHundred) => {
+      console.log("Current Level Obj: ");
+      console.log(currentLevelObj);
+      if (userGotToHundred || opponentGotToHundred) {
+        // if someone got to hundred, check who's winning
+        // if someone won, we're going to one of the finish level screens
+        dispatch(setInFinishLevelScreen(true));
+        if (userGotToHundred && opponentGotToHundred) {
+        } else if (userGotToHundred && !opponentGotToHundred) {
+          const nextLevelNumber = currentLevelObj.levelNumber + 1;
+          if (isLocked(nextLevelNumber)) {
+            // only unlock the next level if it's locked.
+            unlockNextLevel();
+          }
+          dispatch(setStatus(VICTORY_SCREEN));
+        } else if (opponentGotToHundred && !userGotToHundred) {
+          dispatch(setStatus(LOSS_SCREEN));
+        }
       }
-    }
-  }, []);
+    },
+    [currentLevelObj]
+  );
 
   const onTimeOverHandler = useCallback(() => {
     /*
@@ -246,7 +250,6 @@ export default function Home() {
       return;
     }
     // to prevent this method to be invoked twice, for what ever reason
-    console.log("Time over handler is working!");
     dispatch(setTimeOver()); // update the battle settings
     dispatch(setSentResult());
     dispatch(setOpponentSentResult());
@@ -272,21 +275,34 @@ export default function Home() {
     return currentSpriteTemp; // to use locally until the state updates.
   };
 
+  const resetLevelSettings = () => {
+    setUserScore(0);
+    setOpponentScore(0);
+    setUserAnswer("");
+    setOpponentAnswer("");
+    dispatch(resetSettingsNewLevel());
+  };
+
   useEffect(() => {
     dispatch(moveToBattlePage());
     dispatch(setLoading()); // start loading the page
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("EXECUTING THE FIRST USE EFFECT !!!!!!!!!!!!!");
     if (router.isReady) {
+      // reset all the settings
+
+      // load the level object!
       const levelObj = extractLevelObjFromJson(levelsData, router.query.level);
-      setCurrentLevelObj(levelObj);
       if (levelObj === null) {
         // then the level is locked!
         console.log("The level is locked!");
         dispatch(setLocked());
         return;
       }
+      console.log("RESETTING CURRENT LEVEL OBJ!");
+      resetLevelSettings();
       setCurrentLevelObj(levelObj);
       // load the sprites after loading the level's data
       const currentOpponentSprite = loadOpponentSprite(levelObj);
