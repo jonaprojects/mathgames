@@ -7,10 +7,10 @@ const openSans = Open_Sans({ subsets: ["latin"] });
 
 export default function Template(props) {
   return (
-      <div className={`${openSans.className} min-h-screen relative`}>
-        <Navbar />
-        {props.children}
-        <Footer />
-      </div>
+    <div className={`${openSans.className} min-h-screen relative`}>
+      <Navbar />
+      {props.children}
+      <Footer />
+    </div>
   );
 }
