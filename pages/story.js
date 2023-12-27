@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 //redux
 import { useDispatch } from "react-redux";
@@ -7,13 +7,9 @@ import { setInactive } from "@/store/battleSlice";
 //custom components
 import Template from "@/components/template/Template";
 import Container from "@/components/containers/Container";
-import { H1, H2 } from "@/components/typography/Headers";
+import { H1 } from "@/components/typography/Headers";
 import { StoryParagraph } from "@/components/typography/Paragraphs";
-import Sprite from "@/components/sprite/Sprite";
-import TextBox from "@/components/textbox/Textbox";
-import TalkingSprite, {
-  TalkingSpriteShowOnClick,
-} from "@/components/sprite/TalkingSprite";
+import { TalkingSpriteShowOnClick } from "@/components/sprite/TalkingSprite";
 
 export default function Story(props) {
   const dispatch = useDispatch();

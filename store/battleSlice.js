@@ -78,7 +78,6 @@ const battleSlice = createSlice({
     unPauseGame: (state) => {
       state.settings.pause = false;
       state.settings.inBattle = true;
-      state.settings.status = IN_BATTLE;
     },
     setSentResult: (state) => {
       state.settings.sentResult = true;

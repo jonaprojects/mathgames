@@ -13,12 +13,15 @@ import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
 
 export default function Board(props) {
   const dispatch = useDispatch();
+
   const [secondsLeft, setSecondsLeft] = useBattleTimer({
     totalTime: 30,
     onTimeOver: props.onTimeOver,
   });
 
-  const battleSettings = useSelector((state) => state.battle.settings);
+  const timeLeftAfterShortened = useSelector(
+    (state) => state.battle.settings.timeLeftAfterShortened
+  );
 
   return (
     <div className="max-w-[70%]">
@@ -34,7 +37,7 @@ export default function Board(props) {
         <TimeBar
           className="h-1"
           progress={100}
-          duration={battleSettings.timeLeftAfterShortened}
+          duration={timeLeftAfterShortened}
         />
       )}
     </div>

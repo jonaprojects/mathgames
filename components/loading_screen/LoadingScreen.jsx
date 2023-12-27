@@ -5,6 +5,7 @@ import { H1 } from "../typography/Headers";
 import Container from "../containers/Container";
 import { getRandomElement } from "@/auxiliaryMethods/auxiliaryMethods";
 import { motion } from "framer-motion";
+import LoadingAnimation from "../loading_animation/loadingAnimation";
 const MESSAGES = [
   "טבלת הכפל היא כמו מפת אוצר למספרים. היא עוזרת לך למצוא את כל התשובות במהירות, כמו קוד סודי למתמטיקה!",
   "הידעתם? המצרים הקדומים השתמשו בשיטות עתיקות כדי לכפול מספרים.",
@@ -52,7 +53,7 @@ export default function LoadingScreen(props) {
             {currentMessage}
           </motion.p>
         )}
-        <span className={`${classes.loader} mt-7 ml-11`}></span>
+        <LoadingAnimation className="mt-7 ml-11" />
       </Container>
     </Overlay>
   );

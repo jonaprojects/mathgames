@@ -68,6 +68,7 @@ import useOpponent from "@/hooks/useOpponent";
 import { getRandomNumber } from "@/auxiliaryMethods/auxiliaryMethods";
 import LossScreen from "@/components/finish_level_screens/LossScreen";
 import VictoryScreen from "@/components/finish_level_screens/VictoryScreen";
+import AudioPlayer from "@/components/audio_player/AudioPlayer";
 
 // sounds
 //import submitSound from "/sounds/submit.mp3";
@@ -128,7 +129,7 @@ export default function Home() {
   // when the page is ready, just reset the scores, just in case.
 
   // sounds
-  //const [playSubmitRes] = useSound(submitSound);
+  const [playSubmitSound, setPlaySubmitSound] = useState(false);
 
   //TODO: add the loading state later?
 
@@ -136,7 +137,6 @@ export default function Home() {
     // This will be triggered when the user answers the exercise
     dispatch(setSentResult(true));
     setShortenedTime(true);
-    //playSubmitRes();
     if (!opponentSentResult) {
       // if the opponent hasn't already sent a result
       // then we don't want the user to wait a lot of time!
@@ -150,13 +150,15 @@ export default function Home() {
         dispatch(setOpponentSentResult());
         dispatch(setTimeOver());
       }, delay);
+
+      setPlaySubmitSound(true);
     }
   }, [dispatch]);
 
   const onNextExerciseHandler = () => {
     // reset the user answer for the next exercise
     setUserAnswer("");
-
+    dispatch(setAddedScores(false));
     // reset different settings regarding the exercise
     dispatch(resetSettingsNewExercise());
 
@@ -201,7 +203,7 @@ export default function Home() {
       }
     }
     checkWinner(userGotToHundred, opponentGotToHundred);
-    setAddedScores(true);
+    dispatch(setAddedScores(true));
 
     // reset the user score for the next exercise
   }, [
@@ -412,6 +414,11 @@ export default function Home() {
             </Container>
           )}
       </Template>
+      <AudioPlayer
+        src="/sounds/submit.mp3"
+        play={playSubmitSound}
+        onFinish={() => setPlaySubmitSound(false)}
+      />
       <VersusScreen opponentSprite={currentOpponentSprite} />
       {currentModal === PAUSE_MODAL && <PauseModal />}
       {currentModal === MULTIPLICATION_TABLE_MODAL && (
