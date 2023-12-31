@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 //redux
 import { useDispatch } from "react-redux";
-import { setInactive } from "@/store/battleSlice";
+import { resetSettingsOnOtherPages } from "@/store/battleSlice";
 
 //custom components
 import Template from "@/components/template/Template";
@@ -15,7 +15,7 @@ export default function Story(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setInactive());
+    dispatch(resetSettingsOnOtherPages());
   }, [dispatch]);
   return (
     <Template>

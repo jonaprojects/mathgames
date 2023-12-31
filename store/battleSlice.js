@@ -109,6 +109,8 @@ const battleSlice = createSlice({
       state.settings.currentModal = null;
       state.settings.shortenedTime = false;
       state.settings.inFinishLevelScreen = false;
+      state.inBattlePage = true;
+      state.inBattle = true;
     },
     resetSettingsNewLevel: (state) => {
       state.settings.sentResult = false;
@@ -122,6 +124,18 @@ const battleSlice = createSlice({
       state.settings.currentModal = null;
       state.settings.shortenedTime = false;
       state.settings.inFinishLevelScreen = false;
+    },
+    resetSettingsOnOtherPages: (state) => {
+      state.settings.inBattle = false;
+      state.inBattlePage = false;
+      state.settings.status = INACTIVE;
+      state.settings.addedScores = false;
+      state.settings.shortenedTime = false;
+      state.settings.inFinishLevelScreen = false;
+      state.settings.opponentSentResult = false;
+      state.settings.timeOver = false;
+      state.settings.pause = false;
+      state.settings.currentModal = false;
     },
   },
 });
@@ -145,6 +159,7 @@ export const {
   setCurrentModal,
   setAddedScores,
   resetSettingsNewLevel,
+  resetSettingsOnOtherPages,
 } = battleSlice.actions;
 
 export default battleSlice.reducer;

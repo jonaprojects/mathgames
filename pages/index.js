@@ -1,18 +1,17 @@
 import PrimaryButtonRounded from "@/components/buttons/PrimaryButtonRounded";
 import SecondaryButton from "@/components/buttons/SecondaryButton";
-import Card from "@/components/card/Card";
 import LevelProgressCard from "@/components/custom_cards/LevelProgressCard";
 import LoadingAnimation from "@/components/loading_animation/loadingAnimation";
-import ProgressBar from "@/components/progress_bar/ProgressBar";
 import { TalkingSpriteShowOnClick } from "@/components/sprite/TalkingSprite";
 import Template from "@/components/template/Template";
 import { H1 } from "@/components/typography/Headers";
 import { getRandomSprite } from "@/hooks/handleSpritesLogic";
 import useLevelStatistics from "@/hooks/useLevelStatistics";
-import { setInactive, setLoading } from "@/store/battleSlice";
+import { resetSettingsOnOtherPages } from "@/store/battleSlice";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
 export default function Home(props) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -36,9 +35,9 @@ export default function Home(props) {
   const [loadingSprite, setLoadingSprite] = useState(true);
 
   useEffect(() => {
+    dispatch(resetSettingsOnOtherPages());
     setLoadingSprite(true);
     reloadStatistics(); // make sure the statistics are up to date!
-    dispatch(setInactive());
     try {
       setSpriteObj(getRandomSprite());
     } catch {

@@ -7,7 +7,7 @@ import ProgressBar from "@/components/progress_bar/ProgressBar";
 import Template from "@/components/template/Template";
 import { H1 } from "@/components/typography/Headers";
 import { useDispatch } from "react-redux";
-import { setInactive } from "@/store/battleSlice";
+import { resetSettingsOnOtherPages } from "@/store/battleSlice";
 import { floatToPercent } from "@/auxiliaryMethods/auxiliaryMethods";
 import { getCurrentLevel } from "@/hooks/handleLevelsLogic";
 import useCurrentLevel from "@/hooks/useCurrentLevel";
@@ -25,7 +25,7 @@ export default function Levels() {
 
   useEffect(() => {
     reloadStatistics(); // make sure the statistics are up to date!
-    dispatch(setInactive());
+    dispatch(resetSettingsOnOtherPages());
   }, []);
 
   const DUMMY_LEVELS = [];
