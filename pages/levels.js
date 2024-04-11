@@ -38,7 +38,7 @@ export default function Levels() {
       <main>
         <Container>
           <H1 className="mb-6 mt-5">שלבים</H1>
-          <p className="text-lg text-slate-500">
+          <p className="text-lg mb-2 text-slate-500">
             השלמת {levelsProgressPercentage}% מהשלבים!
           </p>
           <ProgressBar

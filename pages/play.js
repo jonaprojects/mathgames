@@ -27,6 +27,7 @@ import {
   PAUSE_MODAL,
   setAddedScores,
   resetSettingsNewLevel,
+  TIE_SCREEN,
 } from "@/store/battleSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -69,6 +70,7 @@ import { getRandomNumber } from "@/auxiliaryMethods/auxiliaryMethods";
 import LossScreen from "@/components/finish_level_screens/LossScreen";
 import VictoryScreen from "@/components/finish_level_screens/VictoryScreen";
 import AudioPlayer from "@/components/audio_player/AudioPlayer";
+import TieScreen from "@/components/finish_level_screens/TieScreen";
 
 // sounds
 //import submitSound from "/sounds/submit.mp3";
@@ -155,6 +157,21 @@ export default function Home() {
     }
   }, [dispatch]);
 
+  const onKeyDownHandler = (event) => {
+    if (battleStatus == LOADING || battleStatus == PAUSE_MODAL) {
+      return;
+    }
+
+    if (event.key === "Enter") {
+      // Do something when the "Enter" key is pressed
+      if (battleStatus == IN_BATTLE && !sentResult) {
+        onSendResultHandler();
+      } else if (battleStatus == FINISH_EXERCISE_BOARD && sentResult) {
+        onNextExerciseHandler();
+      }
+    }
+  };
+
   const onNextExerciseHandler = () => {
     // reset the user answer for the next exercise
     setUserAnswer("");
@@ -226,6 +243,8 @@ export default function Home() {
         // if someone won, we're going to one of the finish level screens
         dispatch(setInFinishLevelScreen(true));
         if (userGotToHundred && opponentGotToHundred) {
+          // In a case of a tie, go to the tie screen
+          dispatch(setStatus(TIE_SCREEN));
         } else if (userGotToHundred && !opponentGotToHundred) {
           const nextLevelNumber = currentLevelObj.levelNumber + 1;
           if (isLocked(nextLevelNumber)) {
@@ -380,6 +399,7 @@ export default function Home() {
                     value={userAnswer ?? ""}
                     disabled={battleStatus !== IN_BATTLE || sentResult}
                     onChange={onChangeInputHandler}
+                    onKeyDown={onKeyDownHandler}
                   />
                   {!sentResult && battleStatus === IN_BATTLE && (
                     <PrimaryButton
@@ -426,7 +446,12 @@ export default function Home() {
       )}
       {currentModal == HELP_MODAL && <HelpModal />}
 
-      {isOnFinishLevelScreen && battleStatus === LOSS_SCREEN && <LossScreen />}
+      {isOnFinishLevelScreen && battleStatus === LOSS_SCREEN && (
+        <LossScreen opponentSprite={currentOpponentSprite} />
+      )}
+      {isOnFinishLevelScreen && battleStatus === TIE_SCREEN && (
+        <TieScreen opponentSprite={currentOpponentSprite} />
+      )}
       {isOnFinishLevelScreen && battleStatus === VICTORY_SCREEN && (
         <VictoryScreen nextLevel={parseInt(router.query.level) + 1} />
       )}

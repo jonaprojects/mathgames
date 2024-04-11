@@ -10,6 +10,8 @@ export const MUL_SCREEN = "MUL_SCREEN";
 export const FINISH_SCREEN = "FINISH_SCREEN";
 export const LOSS_SCREEN = "LOSS_SCREEN";
 export const VICTORY_SCREEN = "VICTORY_SCREEN";
+export const TIE_SCREEN = "TIE_SCREEN";
+
 export const LOCKED_LEVEL = "LOCKED_LEVEL";
 
 // MODALS - CAN BE ON TOP OF THE SCREENS

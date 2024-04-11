@@ -8,12 +8,10 @@ import { useRouter } from "next/router";
 export default function VictoryScreen(props) {
   const router = useRouter();
   const onHome = () => {
-    router.push("/levels"); //TODO: later change?
+    router.push("/levels"); 
   };
 
-  const onClose = () => {
-    onHome(); //! Debatable User experience
-  };
+  const onClose = () => {};
 
   const onNextLevel = () => {
     router.push(`/play?level=${props.nextLevel}`);
