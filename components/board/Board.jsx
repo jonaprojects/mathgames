@@ -24,7 +24,7 @@ export default function Board(props) {
   );
 
   return (
-    <div className="max-w-[70%]">
+    <div className="max-w-[85%]">
       <BoardContainer
         className={`flex flex-col gap-4 justify-center items-center ${props.className}`}
       >

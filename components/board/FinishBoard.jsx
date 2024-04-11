@@ -5,7 +5,8 @@ import BoardContainer from "./BoardContainer";
 export default function FinishBoard(props) {
   const paragraphClasses = "text-slate-500 text-xl";
   return (
-    <BoardContainer className="flex justify-center items-center">
+    
+    <BoardContainer className="flex justify-center items-center max-w-[85%]">
       <div>
         <motion.p className={paragraphClasses}>
           היריב:{" "}
