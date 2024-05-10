@@ -391,10 +391,10 @@ export default function Home() {
                     correctAnswer={number1 * number2}
                   />
                 )}
-                <div className="w-full">
+                <div className="w-full mt-5">
                   <Toolkit />
                 </div>
-                <div className="w-full flex mt-7">
+                <div className="w-full flex mt-1">
                   <input
                     type="text"
                     className={`bg-slate-50 text-lg p-2 w-9/12`}
