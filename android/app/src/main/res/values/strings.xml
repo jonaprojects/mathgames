@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">חשבון קליל (לוח הכפל)</string>
+    <string name="title_activity_main">חשבון קליל (לוח הכפל)</string>
+    <string name="package_name">kefel.vercel.app</string>
+    <string name="custom_url_scheme">kefel.vercel.app</string>
+</resources>

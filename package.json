@@ -10,6 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
     "@reduxjs/toolkit": "^2.0.1",
     "framer-motion": "^10.16.12",
     "next": "14.0.3",
@@ -21,9 +25,10 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.24.1",
+    "@babel/preset-env": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
     "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^15.0.1",
+    "@testing-library/react": "^15.0.2",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
