@@ -9,7 +9,7 @@ export default function Template(props) {
   return (
     <div className={`${openSans.className} min-h-screen relative`}>
       <Navbar />
-      {props.children}
+      <div className="mb-12">{props.children}</div>
       <Footer />
     </div>
   );
