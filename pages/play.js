@@ -391,6 +391,9 @@ export default function Home() {
                     correctAnswer={number1 * number2}
                   />
                 )}
+                <div className="w-full">
+                  <Toolkit />
+                </div>
                 <div className="w-full flex mt-7">
                   <input
                     type="text"
@@ -430,7 +433,6 @@ export default function Home() {
                   className="mt-6 mb-3"
                 />
               </div>
-              <Toolkit />
             </Container>
           )}
       </Template>

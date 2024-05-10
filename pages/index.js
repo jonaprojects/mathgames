@@ -71,7 +71,7 @@ export default function Home(props) {
           <div className="bg-"></div>
         </div>
       </div> */}
-      <main className="w-full h-screen flex justify-center mt-20">
+      <main className="w-full flex justify-center mt-20">
         <div className="max-w-[85%] xl:max-w-4xl">
           <div className="text-center">
             <H1 className="mb-1">ברוכים הבאים!</H1>
