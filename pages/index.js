@@ -84,7 +84,6 @@ export default function Home(props) {
                 עבור למשחק!
               </PrimaryButtonRounded>
               <SecondaryButton onClick={onStoryClickHandler}>
-                {" "}
                 סיפור הרקע
               </SecondaryButton>
             </div>

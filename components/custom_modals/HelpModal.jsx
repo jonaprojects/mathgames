@@ -43,7 +43,7 @@ export default function HelpModal(props) {
         className={`flex justify-center items-center`}
         close={closeHelpModal}
       >
-        <div className=" sm:max-w-[85%] lg:max-w-4xl max-h-[85%]  relative overflow-y-scroll">
+        <div className="sm:max-w-[85%] lg:max-w-4xl max-h-[85%]  relative overflow-y-scroll">
           <div className="bg-white p-6">
             <button
               className="absolute left-5 top-5 text-3xl text-slate-400 hover:text-slate-500"
@@ -52,33 +52,33 @@ export default function HelpModal(props) {
               ×
             </button>
 
-            <H1 className="mb-6">עזרה</H1>
-            <H2 className="mb-1">מה זה כפל?</H2>
-            <p className="mb-2">
+            <H1 className="mb-6 sm:mb-8">עזרה</H1>
+            <H2 className="mb-4 md:mb-5">מה זה כפל?</H2>
+            <p className="mb-3 sm:mb-4">
               כפל זה חיבור שחוזר על עצמו כמה פעמים. שאנחנו כופלים במספר מסוים,
               אנחנו בעצם אומרים כמה פעמים אנחנו רוצים לחבר אותו.
             </p>
-            <p className="mb-2">
+            <p className="mb-3 sm:mb-4">
               אנחנו מסמנים כפל בסימן של איקס:
               <b> ×</b>
             </p>
-            <p className="mb-2">
+            <p className="mb-3 sm:mb-4">
               למשל, 2×3 זה פעמיים 3, שזה 3+3 = 6. באותו האופן,  4×2 זה ארבע פעמים 2, כלומר
               2+2+2+2 שזה 8 . בנוסף, 1×2 = 2, כי זה פעם אחת 2, שזה פשוט 2.
             </p>
-            <p className="mb-4">
+            <p className="mb-4 sm:mb-6">
              לדוגמה, נניח שיש לנו 2 ארנבים, שכל אחד אוכל 3 גזרים ביום. נרצה לדעת כמה
               גזרים שני הארנבים אוכלים ביום.
             </p>
             {rabbitWithCarrots}
             {rabbitWithCarrots}
-            <p className="mt-4 mb-3">
+            <p className="mt-4 sm:mt-6 mb-3">
               הארנב הראשון אוכל 3 גזרים, וגם הארנב השני אוכל 3 גזרים, ולכן שניהם
               ביחד אוכלים 6 גזרים, כי 3+3 = 6. 3+3 זה בעצם פעמיים 3, שזה כמו
               לכתוב 2×3.
             </p>
-            <p>בדקו בעצמכם! ספרו את מספר הגזרים וראו שיש 6!</p>
-            <H2 className="mt-5 mb-2">איך משחקים?</H2>
+            <p className="">בדקו בעצמכם! ספרו את מספר הגזרים וראו שיש 6!</p>
+            <H2 className="mt-5 sm:mt-8 mb-2 md:mb-5">איך משחקים?</H2>
             <p className="mb-2">
               אתם מתחרים ראש בראש בחיות השונות. בכל שלב עליכם כמה מספר תרגילים
               בחשבון. כל תשובה נכונה מזכה אתכם בנקודות. אם הגעתם ל-100 נקודות
