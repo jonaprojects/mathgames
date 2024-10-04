@@ -42,9 +42,6 @@ export default function VersusScreen(props) {
       "שלום, אני פיני הפינגווין. אני אוהב מאוד מתמטיקה, ואני חושב שאני יותר טוב ממך בהרבה",
   };
 
-  const variants = {
-    fadeOut: { opacity: 0 },
-  };
 
   if (!isMounted) {
     return null;
