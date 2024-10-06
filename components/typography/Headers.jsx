@@ -28,3 +28,15 @@ export function H2(props) {
     </h1>
   );
 }
+
+export function H3(props) {
+  return (
+    <h1
+      className={`text-2xl md:text-3xl font-bold ${
+        props.className ?? ""
+      }`}
+    >
+      {props.children}
+    </h1>
+  );
+}
